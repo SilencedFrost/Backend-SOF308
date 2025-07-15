@@ -178,84 +178,86 @@
             </article>
         </section>
 
+        <!-- Signup Modal -->
         <div class="modal" id="SignupModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Đăng ký</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="card p-2">
-                        <form action="">
-                            <label for="fullname" class="form-label">Họ và Tên</label>
-                            <input id="fullname" type="text" class="form-control" placeholder="Nhập họ và tên" required>
-                            
-                            <label for="email" class="form-label mt-2">Email</label>
-                            <input id="email" type="text" class="form-control" placeholder="Nhập email" required>
-                            
-                            <label for="phonenum" class="form-label mt-2">Số Điện Thoại</label>
-                            <input id="phonenum" type="text" class="form-control" placeholder="Nhập số điện thoại" required>
-                            
-                            <label for="password" class="form-label mt-2">Mật Khẩu</label>
-                            <input id="password" type="password" class="form-control" placeholder="Nhập mật khẩu" required>
-                            
-                            <label for="verifypassword" class="form-label mt-2">Xác Nhận Mật Khẩu</label>
-                            <input id="verifypassword" type="password" class="form-control" placeholder="Xác nhận mật Khẩu" required>
-                            
-                            <!-- Gender -->
-                            <div class="d-flex mt-2 mb-2">
-                                <label for="gender" class="me-2">Giới tính: </label>
-                                <fieldset id="gender" class="d-flex gap-1">
-                                    <input type="radio" name="gender" id="male" value="Nam" class="form-check-input">
-                                    <label for="male" class="form-check-label">Nam</label>
-                                    <input type="radio" name="gender" id="female" value="Nữ" class="form-check-input">
-                                    <label for="female" class="form-check-label">Nữ</label>
-                                </fieldset>
-                            </div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Đăng ký</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card p-2">
+                            <form action="">
+                                <label for="fullname" class="form-label">Họ và Tên</label>
+                                <input id="fullname" type="text" class="form-control" placeholder="Nhập họ và tên" required>
+                                
+                                <label for="email" class="form-label mt-2">Email</label>
+                                <input id="email" type="text" class="form-control" placeholder="Nhập email" required>
+                                
+                                <label for="phonenum" class="form-label mt-2">Số Điện Thoại</label>
+                                <input id="phonenum" type="text" class="form-control" placeholder="Nhập số điện thoại" required>
+                                
+                                <label for="password" class="form-label mt-2">Mật Khẩu</label>
+                                <input id="password" type="password" class="form-control" placeholder="Nhập mật khẩu" required>
+                                
+                                <label for="verifypassword" class="form-label mt-2">Xác Nhận Mật Khẩu</label>
+                                <input id="verifypassword" type="password" class="form-control" placeholder="Xác nhận mật Khẩu" required>
+                                
+                                <!-- Gender -->
+                                <div class="d-flex mt-2 mb-2">
+                                    <label for="gender" class="me-2">Giới tính: </label>
+                                    <fieldset id="gender" class="d-flex gap-1">
+                                        <input type="radio" name="gender" id="male" value="Nam" class="form-check-input">
+                                        <label for="male" class="form-chec\-label">Nam</label>
+                                        <input type="radio" name="gender" id="female" value="Nữ" class="form-check-input">
+                                        <label for="female" class="form-check-label">Nữ</label>
+                                    </fieldset>
+                                </div>
 
-                            <label for="language">Ngôn ngữ</label> <br>
-                            <select name="language" id="language" class="form-select">
-                                <option value="Tiếng Việt">Tiếng Việt</option>
-                                <option value="Tiếng Anh">Tiếng Anh</option>
-                            </select>
+                                <label for="language">Ngôn ngữ</label> <br>
+                                <select name="language" id="language" class="form-select">
+                                    <option value="Tiếng Việt">Tiếng Việt</option>
+                                    <option value="Tiếng Anh">Tiếng Anh</option>
+                                </select>
 
-                            <div class="d-flex mt-2">
-                                <input type="checkbox" id="terms" class="form-check-input me-2">
-                                <label for="terms" class="form-check-label">Tôi đồng ý với các điều khoản và điều kiện trên</label>
-                            </div>
+                                <div class="d-flex mt-2">
+                                    <input type="checkbox" id="terms" class="form-check-input me-2">
+                                    <label for="terms" class="form-check-label">Tôi đồng ý với các điều khoản và điều kiện trên</label>
+                                </div>
 
-                            <button class="mt-2 btn btn-primary">Đăng ký</button>
-                        </form>
+                                <button class="mt-2 btn btn-primary">Đăng ký</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal" id="LoginModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>Đăng nhập</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="card p-2">
-                        <form action="">
-                            <label for="email" class="form-label mt-2">Email</label>
-                            <input id="email" type="text" class="form-control" placeholder="Nhập email" required>
+        <!-- Login Modal -->
+        <div class="modal" id="LoginModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>Đăng nhập</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card p-2">
+                            <form action="">
+                                <label for="email" class="form-label mt-2">Email</label>
+                                <input id="email" type="text" class="form-control" placeholder="Nhập email" required>
 
-                            <label for="password" class="form-label mt-2">Mật Khẩu</label>
-                            <input id="password" type="password" class="form-control" placeholder="Nhập mật khẩu" required>
+                                <label for="password" class="form-label mt-2">Mật Khẩu</label>
+                                <input id="password" type="password" class="form-control" placeholder="Nhập mật khẩu" required>
 
-                            <button class="mt-2 btn btn-primary">Đăng knhập</button>
-                        </form>
+                                <button class="mt-2 btn btn-primary">Đăng knhập</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </main>
 
     <!-- Footer -->
