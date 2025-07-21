@@ -1,21 +1,27 @@
 <script>
-import Navbar from './components/Navbar.vue'
+import Navbar from '@/components/layouts/Navbar.vue'
+import Foot from '@/components/layouts/Footer.vue'
 
 export default {
   components: {
-    Navbar
+    Navbar,
+    Foot
   }
 }
 </script>
 
 <template>
-    <Navbar />
-
-  <main>
-    <router-view />
-  </main>
-  
-  <footer>
-
-  </footer>
+  <div class="d-flex flex-column min-vh-100">
+    <header>
+      <Navbar />
+    </header>
+    
+    <main class="flex-fill">
+      <router-view />
+    </main>
+    
+    <footer>
+      <Foot />
+    </footer>
+  </div>
 </template>

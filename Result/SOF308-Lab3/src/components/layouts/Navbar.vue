@@ -1,4 +1,13 @@
 <script>
+import logoImage from '@/assets/images/logo-energy-pilates.png'
+
+export default {
+    data() {
+        return {
+            logoImage
+        }
+    }
+}
 
 </script>
 
@@ -6,8 +15,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- Logo -->
-            <a class="navbar-brand" href="#">
-                <img src="./resources/images/logo-energy-pilates.png" alt="" style="width: 150px;">
+            <a class="navbar-brand" href="/">
+                <img :src="logoImage" alt="" style="width: 150px;">
             </a>
 
             <!-- Toggler button -->
