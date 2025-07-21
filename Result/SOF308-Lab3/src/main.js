@@ -7,9 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 //Router
-import Home from './components/Home.vue'
-import Post from './components/Post.vue'
-import PostDetail from './components/PostDetail.vue'
+import Home from '@/components/pages/Home.vue'
+import Post from '@/components/pages/Post.vue'
+import PostDetail from '@/components/pages/PostDetail.vue'
 
 const routes = [
     { path: '/', component: Home},
