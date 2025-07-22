@@ -22,13 +22,13 @@ export default {
         <section class="row g-2">
             <!-- First column -->
             <div class="col-6">
-                <div class="card bg-white">
+                <div class="card bg-white h-100">
                     <pilates-post />
                 </div>
             </div>
             <!-- Second column -->
             <div class="col-6">
-                <div class="card bg-white">
+                <div class="card bg-white h-100">
                     <core-value-post />
                     <orange-post />
                     <sesame-oil-post />
@@ -37,7 +37,9 @@ export default {
             </div>
         </section>
         <div class="p-2 text-center">
-            <button class="btn btn-info btn-sm p-1">Xem thêm</button>
+            <router-link to="/post">
+                <button class="btn btn-info btn-sm p-1">Xem thêm</button>
+            </router-link>
         </div>
     </div>
 </template>
