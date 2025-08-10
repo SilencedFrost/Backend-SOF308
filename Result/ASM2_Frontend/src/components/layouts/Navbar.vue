@@ -66,7 +66,7 @@ export default {
                             <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
                             <li><a class="dropdown-item" href="#">Quên mật khẩu</a></li>
                             <li><a class="dropdown-item" href="#">Đăng ký thành viên</a></li>
-                            <li><router-link class="dropdown-item" to="/api/user">Quản lý tài khoản (API)</router-link></li>
+                            <li><router-link class="dropdown-item" to="/api/user">Quản lý tài khoản</router-link></li>
                         </ul>
 
                         <!-- Mobile collapse -->
