@@ -23,16 +23,6 @@ create table Users(
 )
 go
 
-create table SiteVisits(
-	VisitId int PRIMARY KEY IDENTITY(1, 1),
-	Url nvarchar(100),
-	VisitDate datetime2(3) not null,
-	UserId bigint not null,
-	foreign key (UserId) references Users(UserId) on delete cascade,
-)
-go
-
-
 create table Categories(
 	CategoryId int primary key identity(1, 1),
 	CategoryName nvarchar(100)
@@ -200,58 +190,4 @@ insert into Comments values(1019, 1026, '2024-08-07 12:55:00', 'portable ssd is 
 insert into Comments values(1020, 1001, '2024-08-08 09:30:00', 'simple laptop that does what it needs to do. not fancy but reliable for students and basic computing needs')
 insert into Comments values(1021, 1021, '2024-08-09 16:45:00', 'rtx 4070 is a sweet spot for 1440p gaming. runs everything i play at high settings with good frame rates')
 insert into Comments values(1022, 1007, '2024-08-10 11:20:00', 'beast of a gaming desktop, handles everything at max settings. a bit overkill for my needs but future proof')
-go
-
--- site visits data (50 visits showing realistic user browsing patterns)
-insert into SiteVisits values('/products', '2024-08-08 10:15:00', 1000)
-insert into SiteVisits values('/products/laptops', '2024-08-08 10:16:30', 1000)
-insert into SiteVisits values('/product/1000', '2024-08-08 10:18:45', 1000)
-insert into SiteVisits values('/cart', '2024-08-08 10:22:15', 1000)
-insert into SiteVisits values('/products', '2024-08-08 14:30:00', 1001)
-insert into SiteVisits values('/products/monitors', '2024-08-08 14:32:10', 1001)
-insert into SiteVisits values('/product/1008', '2024-08-08 14:35:20', 1001)
-insert into SiteVisits values('/products/desktops', '2024-08-08 16:45:00', 1002)
-insert into SiteVisits values('/product/1002', '2024-08-08 16:47:30', 1002)
-insert into SiteVisits values('/products/mice', '2024-08-08 16:50:15', 1002)
-insert into SiteVisits values('/product/1015', '2024-08-08 16:52:45', 1002)
-insert into SiteVisits values('/cart', '2024-08-08 16:55:30', 1002)
-insert into SiteVisits values('/', '2024-08-09 09:20:00', 1003)
-insert into SiteVisits values('/products', '2024-08-09 09:21:15', 1003)
-insert into SiteVisits values('/products/laptops', '2024-08-09 09:23:30', 1003)
-insert into SiteVisits values('/product/1003', '2024-08-09 09:25:45', 1003)
-insert into SiteVisits values('/products/storage', '2024-08-09 11:40:00', 1004)
-insert into SiteVisits values('/product/1025', '2024-08-09 11:42:20', 1004)
-insert into SiteVisits values('/cart', '2024-08-09 11:45:10', 1004)
-insert into SiteVisits values('/products/keyboards', '2024-08-09 13:15:00', 1005)
-insert into SiteVisits values('/product/1012', '2024-08-09 13:17:30', 1005)
-insert into SiteVisits values('/products/mice', '2024-08-09 13:20:15', 1005)
-insert into SiteVisits values('/product/1016', '2024-08-09 13:22:45', 1005)
-insert into SiteVisits values('/checkout', '2024-08-09 13:25:30', 1005)
-insert into SiteVisits values('/', '2024-08-09 15:30:00', 1006)
-insert into SiteVisits values('/products/monitors', '2024-08-09 15:32:15', 1006)
-insert into SiteVisits values('/product/1009', '2024-08-09 15:35:40', 1006)
-insert into SiteVisits values('/products/headphones', '2024-08-09 17:45:00', 1007)
-insert into SiteVisits values('/product/1017', '2024-08-09 17:47:25', 1007)
-insert into SiteVisits values('/product/1020', '2024-08-09 17:50:10', 1007)
-insert into SiteVisits values('/cart', '2024-08-09 17:52:30', 1007)
-insert into SiteVisits values('/products', '2024-08-09 19:20:00', 1008)
-insert into SiteVisits values('/products/laptops', '2024-08-09 19:22:15', 1008)
-insert into SiteVisits values('/product/1004', '2024-08-09 19:25:30', 1008)
-insert into SiteVisits values('/products/graphics-cards', '2024-08-10 08:15:00', 1009)
-insert into SiteVisits values('/product/1021', '2024-08-10 08:17:45', 1009)
-insert into SiteVisits values('/product/1022', '2024-08-10 08:20:30', 1009)
-insert into SiteVisits values('/products/desktops', '2024-08-10 10:30:00', 1010)
-insert into SiteVisits values('/product/1005', '2024-08-10 10:32:20', 1010)
-insert into SiteVisits values('/product/1007', '2024-08-10 10:35:15', 1010)
-insert into SiteVisits values('/cart', '2024-08-10 10:38:00', 1010)
-insert into SiteVisits values('/products/keyboards', '2024-08-10 12:45:00', 1011)
-insert into SiteVisits values('/product/1014', '2024-08-10 12:47:30', 1011)
-insert into SiteVisits values('/products/mice', '2024-08-10 12:50:15', 1011)
-insert into SiteVisits values('/product/1015', '2024-08-10 12:52:45', 1011)
-insert into SiteVisits values('/products/storage', '2024-08-10 14:20:00', 1012)
-insert into SiteVisits values('/product/1026', '2024-08-10 14:22:30', 1012)
-insert into SiteVisits values('/products/monitors', '2024-08-10 16:30:00', 1013)
-insert into SiteVisits values('/product/1010', '2024-08-10 16:32:45', 1013)
-insert into SiteVisits values('/products/headphones', '2024-08-10 18:15:00', 1014)
-insert into SiteVisits values('/product/1018', '2024-08-10 18:17:20', 1014)
 go

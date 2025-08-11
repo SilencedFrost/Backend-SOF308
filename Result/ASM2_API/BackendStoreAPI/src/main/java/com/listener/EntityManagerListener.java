@@ -1,6 +1,5 @@
 package com.listener;
 
-import com.entity.Visit;
 import com.util.EntityManagerUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;

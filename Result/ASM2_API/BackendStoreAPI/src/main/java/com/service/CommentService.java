@@ -3,7 +3,6 @@ package com.service;
 import com.dto.CommentDTO;
 import com.entity.Comment;
 import com.entity.User;
-import com.entity.Video;
 import com.mapper.CommentMapper;
 import com.util.EntityManagerUtil;
 import com.util.ValidationUtil;

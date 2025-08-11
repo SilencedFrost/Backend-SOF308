@@ -1,9 +1,7 @@
 package com.mapper;
 
 import com.dto.FavouriteDTO;
-import com.entity.Favourite;
 import com.entity.User;
-import com.entity.Video;
 
 import java.util.ArrayList;
 import java.util.List;

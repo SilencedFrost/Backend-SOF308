@@ -3,7 +3,6 @@ package com.mapper;
 import com.dto.CommentDTO;
 import com.entity.Comment;
 import com.entity.User;
-import com.entity.Video;
 
 import java.util.ArrayList;
 import java.util.List;

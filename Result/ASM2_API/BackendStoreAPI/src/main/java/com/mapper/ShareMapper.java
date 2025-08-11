@@ -1,9 +1,7 @@
 package com.mapper;
 
 import com.dto.ShareDTO;
-import com.entity.Share;
 import com.entity.User;
-import com.entity.Video;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.service;
 
 import com.dto.LogDTO;
-import com.entity.Log;
 import com.entity.User;
 import com.mapper.LogMapper;
 import com.util.EntityManagerUtil;

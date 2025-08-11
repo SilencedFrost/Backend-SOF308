@@ -1,7 +1,6 @@
 package com.mapper;
 
 import com.dto.VideoDTO;
-import com.entity.Video;
 
 import java.util.ArrayList;
 import java.util.List;

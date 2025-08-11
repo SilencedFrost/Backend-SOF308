@@ -1,7 +1,6 @@
 package com.mapper;
 
 import com.dto.LogDTO;
-import com.entity.Log;
 import com.entity.User;
 
 import java.util.ArrayList;

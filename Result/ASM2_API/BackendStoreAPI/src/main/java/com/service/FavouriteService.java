@@ -1,9 +1,7 @@
 package com.service;
 
 import com.dto.FavouriteDTO;
-import com.entity.Favourite;
 import com.entity.User;
-import com.entity.Video;
 import com.mapper.FavouriteMapper;
 import com.util.EntityManagerUtil;
 import com.util.ValidationUtil;

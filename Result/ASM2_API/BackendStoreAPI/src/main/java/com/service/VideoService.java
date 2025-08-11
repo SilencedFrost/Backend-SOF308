@@ -1,7 +1,6 @@
 package com.service;
 
 import com.dto.VideoDTO;
-import com.entity.Video;
 import com.mapper.VideoMapper;
 import com.util.EntityManagerUtil;
 import com.util.ValidationUtil;

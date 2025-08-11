@@ -1,9 +1,7 @@
 package com.service;
 
 import com.dto.ShareDTO;
-import com.entity.Share;
 import com.entity.User;
-import com.entity.Video;
 import com.mapper.ShareMapper;
 import com.util.EntityManagerUtil;
 import com.util.ValidationUtil;
