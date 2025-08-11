@@ -6,7 +6,6 @@ import com.dto.VideoDTO;
 import com.entity.Role;
 import com.entity.User;
 import com.mapper.UserMapper;
-import com.mapper.VideoMapper;
 import com.security.PasswordHasher;
 import com.util.EntityManagerUtil;
 import com.util.ValidationUtil;
