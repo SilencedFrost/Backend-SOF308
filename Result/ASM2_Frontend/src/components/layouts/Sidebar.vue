@@ -2,54 +2,94 @@
   <div>
     <!-- Toggle Button for Mobile -->
     <button 
-      class="btn btn-primary sidebar-toggle d-lg-none" 
+      class="btn d-lg-none position-fixed" 
+      :class="isOpen ? 'btn-danger' : 'btn-primary'"
       type="button" 
       @click="toggleSidebar"
-      :class="{ 'active': isOpen }"
+      style="top: 20px; left: 20px; z-index: 1050; width: 45px; height: 45px;"
     >
-      ☰
+      <i class="fas fa-bars" v-if="!isOpen"></i>
+      <i class="fas fa-times" v-else></i>
     </button>
 
     <!-- Overlay for mobile -->
     <div 
-      class="sidebar-overlay d-lg-none" 
-      :class="{ 'show': isOpen }" 
+      class="d-lg-none position-fixed w-100 h-100" 
       @click="closeSidebar"
+      :style="{
+        top: 0, 
+        left: 0, 
+        background: 'rgba(0,0,0,0.6)', 
+        zIndex: 1040, 
+        opacity: isOpen ? 1 : 0, 
+        visibility: isOpen ? 'visible' : 'hidden', 
+        transition: 'all 0.3s ease'
+      }"
     ></div>
 
     <!-- Sidebar -->
-    <div class="sidebar" :class="{ 'show': isOpen }">
-      <div class="sidebar-header">
-        <h5 class="sidebar-title">Danh mục sản phẩm</h5>
-        <button 
-          class="btn-close d-lg-none" 
-          @click="closeSidebar"
-          aria-label="Đóng"
-        ></button>
+    <div 
+      class="bg-white shadow-sm position-fixed position-lg-relative"
+      :style="{
+        top: '60px',
+        left: isOpen ? '0' : '-280px',
+        width: '280px',
+        height: 'calc(100vh - 60px)',
+        zIndex: 1045,
+        transition: 'left 0.3s ease'
+      }"
+      style="left: 0 !important;"
+    >
+      <!-- Sidebar Header -->
+      <div class="p-3 border-bottom bg-light">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 fw-bold">Danh mục sản phẩm</h5>
+          <button 
+            class="btn-close d-lg-none" 
+            @click="closeSidebar"
+            aria-label="Đóng"
+          ></button>
+        </div>
       </div>
 
-      <div class="sidebar-content">
+      <!-- Sidebar Content -->
+      <div class="p-3">
         <!-- Product Categories -->
-        <ul class="category-list">
-          <li class="category-item">
-            <a href="#" class="category-link" @click.prevent="filterProducts('dien-thoai')">
-              <div class="category-icon">📱</div>
-              <span class="category-name">Điện thoại</span>
-              <div class="category-arrow">›</div>
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2">
+            <a 
+              href="#" 
+              class="d-flex align-items-center p-2 text-decoration-none rounded text-dark"
+              @click.prevent="filterProducts('dien-thoai')"
+              @mouseover="$event.target.classList.add('bg-light', 'text-primary')"
+              @mouseout="$event.target.classList.remove('bg-light', 'text-primary')"
+            >
+              <i class="fas fa-mobile-alt text-success me-3"></i>
+              <span>Điện thoại</span>
             </a>
           </li>
-          <li class="category-item">
-            <a href="#" class="category-link" @click.prevent="filterProducts('laptop')">
-              <div class="category-icon">💻</div>
-              <span class="category-name">Laptop</span>
-              <div class="category-arrow">›</div>
+          <li class="mb-2">
+            <a 
+              href="#" 
+              class="d-flex align-items-center p-2 text-decoration-none rounded text-dark"
+              @click.prevent="filterProducts('laptop')"
+              @mouseover="$event.target.classList.add('bg-light', 'text-primary')"
+              @mouseout="$event.target.classList.remove('bg-light', 'text-primary')"
+            >
+              <i class="fas fa-laptop text-primary me-3"></i>
+              <span>Laptop</span>
             </a>
           </li>
-          <li class="category-item">
-            <a href="#" class="category-link" @click.prevent="filterProducts('pc')">
-              <div class="category-icon">🖥️</div>
-              <span class="category-name">PC</span>
-              <div class="category-arrow">›</div>
+          <li class="mb-2">
+            <a 
+              href="#" 
+              class="d-flex align-items-center p-2 text-decoration-none rounded text-dark"
+              @click.prevent="filterProducts('pc')"
+              @mouseover="$event.target.classList.add('bg-light', 'text-primary')"
+              @mouseout="$event.target.classList.remove('bg-light', 'text-primary')"
+            >
+              <i class="fas fa-desktop text-info me-3"></i>
+              <span>PC</span>
             </a>
           </li>
         </ul>
@@ -66,6 +106,7 @@ export default {
       isOpen: false
     }
   },
+
   methods: {
     toggleSidebar() {
       this.isOpen = !this.isOpen;
@@ -105,206 +146,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-/* Toggle Button */
-.sidebar-toggle {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1050;
-  border-radius: 8px;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  font-size: 18px;
-}
-
-.sidebar-toggle:hover {
-  transform: scale(1.05);
-}
-
-.sidebar-toggle.active {
-  background-color: #dc3545;
-  border-color: #dc3545;
-}
-
-/* Overlay */
-.sidebar-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1040;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.sidebar-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: -280px;
-  width: 280px;
-  height: 100vh;
-  background-color: #fff;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-  z-index: 1045;
-  transition: left 0.3s ease;
-  overflow-y: auto;
-}
-
-.sidebar.show {
-  left: 0;
-}
-
-/* Desktop sidebar - always visible */
-@media (min-width: 992px) {
-  .sidebar {
-    position: relative;
-    left: 0;
-    height: auto;
-    box-shadow: none;
-    border-right: 1px solid #e0e0e0;
-  }
-  
-  .sidebar-toggle {
-    display: none !important;
-  }
-  
-  .sidebar-overlay {
-    display: none !important;
-  }
-}
-
-/* Sidebar Header */
-.sidebar-header {
-  padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f8f9fa;
-}
-
-.sidebar-title {
-  margin: 0;
-  color: #333;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-/* Sidebar Content */
-.sidebar-content {
-  padding: 0;
-}
-
-/* Category List */
-.category-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.category-item {
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.category-item:last-child {
-  border-bottom: none;
-}
-
-.category-link {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  color: #333;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  background-color: #fff;
-}
-
-.category-link:hover {
-  background-color: #f8f9fa;
-  color: #0d6efd;
-  text-decoration: none;
-}
-
-.category-icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-
-.category-name {
-  flex: 1;
-  font-weight: 500;
-  font-size: 1rem;
-}
-
-.category-arrow {
-  font-size: 18px;
-  color: #999;
-  transition: transform 0.2s ease;
-}
-
-.category-link:hover .category-arrow {
-  transform: translateX(3px);
-  color: #0d6efd;
-}
-
-/* Scrollbar styling */
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
-}
-
-/* Animation for hover effects */
-.category-link {
-  position: relative;
-}
-
-.category-link::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background-color: #0d6efd;
-  transform: scaleY(0);
-  transition: transform 0.2s ease;
-}
-
-.category-link:hover::before {
-  transform: scaleY(1);
-}
-</style>
