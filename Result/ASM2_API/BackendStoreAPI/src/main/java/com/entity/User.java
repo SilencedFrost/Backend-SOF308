@@ -54,4 +54,9 @@ public class User {
             role.getUsers().add(this);
         }
     }
+
+    @PrePersist
+    protected void onCreate() {
+        this.creationDate = LocalDateTime.now();
+    }
 }

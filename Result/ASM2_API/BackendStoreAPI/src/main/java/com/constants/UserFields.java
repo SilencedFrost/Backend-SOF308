@@ -12,7 +12,7 @@ public enum UserFields implements Automatable {
     PASSWORD_HASH("passwordHash"),
     CREATION_DATE("creationDate"),
     ROLE_ID("roleId"),
-    LAST_LOGIN("lasLoginDate"),
+    LAST_LOGIN("lastLoginDate"),
 
     private final String propertyKey;
 }

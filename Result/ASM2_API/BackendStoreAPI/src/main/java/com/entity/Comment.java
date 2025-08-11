@@ -31,4 +31,9 @@ public class Comment {
 
 	@Column(name = "CommentContent", nullable = false, length = 500)
 	private String commentContent;
+
+	@PrePersist
+	protected void onCreate() {
+		this.commentDate = LocalDateTime.now();
+	}
 }
