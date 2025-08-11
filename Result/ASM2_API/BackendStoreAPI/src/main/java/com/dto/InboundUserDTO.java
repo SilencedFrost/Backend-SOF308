@@ -17,4 +17,5 @@ public class InboundUserDTO implements UserDTO{
     private String email;
     private String passwordHash;
     private String roleName;
+    private boolean active;
 }

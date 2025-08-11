@@ -11,7 +11,7 @@ public enum ProductFields implements Automatable {
     PRICE("price"),
     STOCK_QUANTITY("stockQuantity"),
     IMAGE_URL("imageUrl"),
-    IS_ACTIVE("isActive"),
+    IS_ACTIVE("active"),
     PRODUCT_DESCRIPTION("productDescription"),
     CATEGORY_ID("categoryId"),
     SPECIFICATIONS("specifications"),

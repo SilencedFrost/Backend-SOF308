@@ -37,7 +37,7 @@ public class User {
     private Role role;
 
     @Column(name = "IsActive", nullable = false)
-    private boolean isActive;
+    private boolean active;
 
     @Column(name = "LastLoginDate")
     private LocalDateTime lastLoginDate;

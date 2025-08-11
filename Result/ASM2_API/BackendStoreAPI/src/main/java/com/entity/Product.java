@@ -34,7 +34,7 @@ public class Product {
     private String imageUrl;
 
     @Column(name = "IsActive", nullable = false)
-    private boolean isActive;
+    private boolean active;
 
     @Column(name = "ProductDescription", nullable = false, length = 1024)
     private String productDescription;

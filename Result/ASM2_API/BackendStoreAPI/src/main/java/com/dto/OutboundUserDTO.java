@@ -17,5 +17,6 @@ public class OutboundUserDTO implements UserDTO{
     private String email;
     private LocalDateTime creationDate;
     private String roleName;
+    private boolean active;
     private LocalDateTime lastLoginDate;
 }
