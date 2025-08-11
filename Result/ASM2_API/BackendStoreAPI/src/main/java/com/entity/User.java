@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
     @Id
@@ -58,5 +57,14 @@ public class User {
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
+    }
+
+    public User(Long userId, String username, String email, String passwordHash, Role role, boolean active) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        setRole(role);
+        this.active = active;
     }
 }

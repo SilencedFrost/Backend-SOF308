@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InboundUserDTO implements UserDTO{
-    private String userId;
+    private Long userId;
     private String username;
     private String email;
     private String passwordHash;

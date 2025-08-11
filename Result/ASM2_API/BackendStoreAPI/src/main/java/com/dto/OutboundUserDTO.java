@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OutboundUserDTO implements UserDTO{
-    private String userId;
+    private Long userId;
     private String username;
     private String email;
     private LocalDateTime creationDate;
