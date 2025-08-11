@@ -1,4 +1,15 @@
 package com.dto;
 
-public class InboundCategoryDTO {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class InboundCategoryDTO implements CategoryDTO{
+    private Integer categoryId;
+    private String categoryName;
 }
