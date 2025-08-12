@@ -9,9 +9,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 //Router
 import Home from '@/components/pages/Home.vue'
 import ProductDetail from '@/components/pages/ProductDetail.vue'
+import Cart from '@/components/pages/Cart.vue'
 
 const routes = [
-    { path: '/', component: Home },
+    { path: '/', component: Home},
+    { path: '/cart', component: Cart},
     { path: '/product/:id', component: ProductDetail }
 ]
 

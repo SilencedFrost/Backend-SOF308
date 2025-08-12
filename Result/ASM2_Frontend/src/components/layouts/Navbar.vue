@@ -62,7 +62,7 @@ export default {
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="#">Đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+<li><a class="dropdown-item" href="#">Đăng xuất</a></li>
                             <li><a class="dropdown-item" href="#">Quên mật khẩu</a></li>
                             <li><a class="dropdown-item" href="#">Đăng ký thành viên</a></li>
                             <li><router-link class="dropdown-item" to="/api/user">Quản lý tài khoản</router-link></li>
