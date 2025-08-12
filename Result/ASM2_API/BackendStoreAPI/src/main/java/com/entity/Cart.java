@@ -1,29 +1,48 @@
 package com.entity;
 
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Entity
-@Table(name = "Cart")
-@IdClass(CartPK.class)
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "Cart",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"UserId", "ProductId"})
+        })
 public class Cart {
 
-    @Id
-    @Column(name = "UserId", nullable = false)
-    private Long userId;
+    @EmbeddedId
+    private CartPK id;
 
-    @Id
-    @Column(name = "ProductId", nullable = false)
-    private Long productId;
+    @Column(name = "Quantity", nullable = false)
+    private Integer quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UserId", insertable = false, updatable = false)
-    private User user;
+    // Convenience accessors
+    public User getUser() {
+        return id != null ? id.getUser() : null;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ProductId", insertable = false, updatable = false)
-    private Product product;
+    public Product getProduct() {
+        return id != null ? id.getProduct() : null;
+    }
 
-    private int quantity;
+    public void setUser(User user) {
+        if (id == null) id = new CartPK();
+        id.setUser(user);
+        if (user != null) {
+            user.getCarts().add(this);
+        }
+    }
+
+    public void setProduct(Product product) {
+        if (id == null) id = new CartPK();
+        id.setProduct(product);
+        if (product != null) {
+            product.getCarts().add(this);
+        }
+    }
 }

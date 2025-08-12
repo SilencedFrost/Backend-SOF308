@@ -1,15 +1,24 @@
 package com.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@Embeddable
 public class CartPK implements Serializable {
-    private Long userId;
-    private Long productId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "UserId", nullable = false,
+            foreignKey = @ForeignKey(name = "FK_Cart_User"))
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ProductId", nullable = false,
+            foreignKey = @ForeignKey(name = "FK_Cart_Product"))
+    private Product product;
 }
