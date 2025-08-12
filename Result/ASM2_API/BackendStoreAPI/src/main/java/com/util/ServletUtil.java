@@ -1,7 +1,6 @@
 package com.util;
 
 import com.constants.Automatable;
-import com.constants.Buttons;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

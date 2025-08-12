@@ -16,7 +16,7 @@ public class EntityManagerUtil {
     static {
         try {
             ConfigLoader.loadDatabaseConfig();
-            emf = Persistence.createEntityManagerFactory("PolyOE");
+            emf = Persistence.createEntityManagerFactory("BackendStore");
             logger.info("EntityManagerFactory created successfully");
 
             // Shutdown hook

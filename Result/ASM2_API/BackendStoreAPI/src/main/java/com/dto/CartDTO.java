@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
-    private Integer roleId;
-    private String roleName;
+public class CartDTO {
+    private Long userId;
+    private Long productId;
+    private Integer quantity;
 }

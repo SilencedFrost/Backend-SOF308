@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
-    private Integer roleId;
-    private String roleName;
+public class InboundCategoryDTO implements CategoryDTO{
+    private Integer categoryId;
+    private String categoryName;
 }
