@@ -10,11 +10,14 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import Home from '@/components/pages/Home.vue'
 import Post from '@/components/pages/Post.vue'
 import PostDetail from '@/components/pages/PostDetail.vue'
+import Cart from '@/components/pages/Cart.vue'
 
 const routes = [
     { path: '/', component: Home},
     { path: '/post', component: Post},
-    { path: '/post/detail', component: PostDetail}
+    { path: '/post/detail', component: PostDetail},
+    { path: '/Cart', component: Cart}
+
 ]
 
 const router = createRouter({
