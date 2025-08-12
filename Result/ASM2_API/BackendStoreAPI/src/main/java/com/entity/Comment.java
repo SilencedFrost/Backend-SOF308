@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Comment {
 
 	@Id
@@ -35,5 +34,12 @@ public class Comment {
 	@PrePersist
 	protected void onCreate() {
 		this.commentDate = LocalDateTime.now();
+	}
+
+	public Comment(Long commentId, User user, Product product, String commentContent) {
+		this.commentId = commentId;
+		setUser(user);
+		setProduct(product);
+		this.commentContent = commentContent;
 	}
 }
