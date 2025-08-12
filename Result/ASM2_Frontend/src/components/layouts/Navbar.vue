@@ -51,7 +51,6 @@ export default {
                             Giỏ hàng
                         </router-link>
                     </li>
-
                     <!-- Account dropdown/collapse -->
                     <li class="nav-item dropdown">
                         <!-- Desktop dropdown -->

@@ -11,11 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class InboundUserDTO implements UserDTO{
+public class OutboundCommentDTO implements CommentDTO{
+    private Long commentId;
     private Long userId;
-    private String username;
-    private String email;
-    private String passwordHash;
-    private String roleName;
-    private boolean active;
+    private Long productId;
+    private LocalDateTime commentDate;
+    private String commentContent;
 }

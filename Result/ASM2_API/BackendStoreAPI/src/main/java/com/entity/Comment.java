@@ -1,43 +1,45 @@
 package com.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "Comments")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "Comments")
 public class Comment {
 
 	@Id
-	@Column(name = "CommentId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "CommentId")
 	private Long commentId;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "UserId", nullable = false)
 	private User user;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "VideoId", nullable = false)
-	private Video video;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ProductId", nullable = false)
+	private Product product;
 
-	@CreationTimestamp
-	@Column(name = "CommentDate", updatable = false, nullable = false)
+	@Column(name = "CommentDate", nullable = false)
 	private LocalDateTime commentDate;
 
 	@Column(name = "CommentContent", nullable = false, length = 500)
 	private String commentContent;
 
-	public Comment(User user, Video video, String commentContent) {
-		this.user = user;
-		this.video = video;
+	@PrePersist
+	protected void onCreate() {
+		this.commentDate = LocalDateTime.now();
+	}
+
+	public Comment(Long commentId, User user, Product product, String commentContent) {
+		this.commentId = commentId;
+		setUser(user);
+		setProduct(product);
 		this.commentContent = commentContent;
 	}
 }

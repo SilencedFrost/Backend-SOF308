@@ -1,9 +1,11 @@
 package com.mapper;
 
 import com.dto.CommentDTO;
+import com.dto.InboundCommentDTO;
+import com.dto.OutboundCommentDTO;
 import com.entity.Comment;
+import com.entity.Product;
 import com.entity.User;
-import com.entity.Video;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,23 +16,24 @@ public class CommentMapper {
         if (comment == null) {
             return null;
         }
-        return new CommentDTO(
+        return new OutboundCommentDTO(
                 comment.getCommentId(),
                 comment.getUser().getUserId(),
-                comment.getVideo().getVideoId(),
+                comment.getProduct().getProductId(),
                 comment.getCommentDate(),
                 comment.getCommentContent()
         );
     }
 
-    public static Comment toEntity(CommentDTO commentDTO, User user, Video video) {
+    public static Comment toEntity(InboundCommentDTO commentDTO, User user, Product product) {
         if (commentDTO == null) {
             return null;
         }
 
         return new Comment(
+                commentDTO.getCommentId(),
                 user,
-                video,
+                product,
                 commentDTO.getCommentContent()
         );
     }
