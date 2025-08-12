@@ -10,6 +10,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import Home from '@/components/pages/Home.vue'
 import Profile from '@/components/pages/Profile.vue'
 import Cart from '@/components/pages/Cart.vue'
+import ProductDetail from '@/components/pages/ProductDetail.vue'
 
 const routes = [
     { path: '/', component: Home},
