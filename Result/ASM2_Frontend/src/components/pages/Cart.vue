@@ -123,36 +123,72 @@
           </div>
         </div>
 
-        <!-- Cart Summary -->
-        <div class="card border-0 shadow-sm">
+        <!-- Chi tiết thanh toán - Card riêng biệt -->
+        <div class="card border-0 shadow-sm" style="margin-bottom: 3rem;">
           <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-lg-8">
-                <div class="border-end border-lg-end-0">
-                  <h5 class="card-title text-primary mb-3">
-                    <i class="fas fa-calculator me-2"></i>
-                    Chi tiết thanh toán
-                  </h5>
-                  <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Tạm tính ({{ cartItems.length }} sản phẩm):</span>
-                    <span class="fw-bold">{{ formatCurrency(subtotal) }}</span>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Phí vận chuyển:</span>
-                    <span class="text-success fw-bold">Miễn phí</span>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Thuế VAT (10%):</span>
-                    <span class="fw-bold">{{ formatCurrency(subtotal * 0.1) }}</span>
-                  </div>
-                  <hr class="my-3">
-                  <div class="d-flex justify-content-between">
-                    <h5 class="mb-0 text-dark">Tổng cộng:</h5>
+            <h5 class="card-title text-primary mb-3">
+              <i class="fas fa-calculator me-2"></i>
+              Chi tiết thanh toán
+            </h5>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-muted">Tạm tính ({{ cartItems.length }} sản phẩm):</span>
+                  <span class="fw-bold">{{ formatCurrency(subtotal) }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-muted">Phí vận chuyển:</span>
+                  <span class="text-success fw-bold">Miễn phí</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-muted">Thuế VAT (10%):</span>
+                  <span class="fw-bold">{{ formatCurrency(subtotal * 0.1) }}</span>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="text-lg-end">
+                  <hr class="my-3 d-lg-none">
+                  <div class="d-flex justify-content-between justify-content-lg-end">
+                    <h5 class="mb-0 text-dark me-lg-3">Tổng cộng:</h5>
                     <h4 class="mb-0 text-primary fw-bold">{{ formatCurrency(totalPrice) }}</h4>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-4 text-lg-center mt-4 mt-lg-0">
+            </div>
+          </div>
+        </div>
+
+        <!-- Nút thanh toán - Card riêng biệt -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-lg-8">
+                <div class="d-flex align-items-center">
+                  <div class="me-4">
+                    <i class="fas fa-shield-alt fa-2x text-success me-2"></i>
+                    <span class="text-muted">Thanh toán an toàn & bảo mật</span>
+                  </div>
+                  <div>
+                    <small class="text-muted d-block mb-1">Chúng tôi chấp nhận:</small>
+                    <div class="d-flex">
+                      <span class="badge bg-light text-dark me-1">
+                        <i class="fab fa-cc-visa"></i>
+                      </span>
+                      <span class="badge bg-light text-dark me-1">
+                        <i class="fab fa-cc-mastercard"></i>
+                      </span>
+                      <span class="badge bg-light text-dark me-1">
+                        <i class="fas fa-mobile-alt"></i>
+                      </span>
+                      <span class="badge bg-light text-dark">
+                        <i class="fas fa-university"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-lg-4 text-end mt-4 mt-lg-0">
                 <div class="d-grid gap-2">
                   <button class="btn btn-primary btn-lg fw-bold" @click="checkout">
                     <i class="fas fa-credit-card me-2"></i>
@@ -162,25 +198,6 @@
                     <i class="fas fa-arrow-left me-2"></i>
                     Tiếp tục mua sắm
                   </button>
-                </div>
-                
-                <!-- Payment Methods -->
-                <div class="mt-3">
-                  <small class="text-muted d-block mb-2">Chúng tôi chấp nhận:</small>
-                  <div class="d-flex justify-content-center">
-                    <span class="badge bg-light text-dark me-1">
-                      <i class="fab fa-cc-visa"></i>
-                    </span>
-                    <span class="badge bg-light text-dark me-1">
-                      <i class="fab fa-cc-mastercard"></i>
-                    </span>
-                    <span class="badge bg-light text-dark me-1">
-                      <i class="fas fa-mobile-alt"></i>
-                    </span>
-                    <span class="badge bg-light text-dark">
-                      <i class="fas fa-university"></i>
-                    </span>
-                  </div>
                 </div>
               </div>
             </div>
