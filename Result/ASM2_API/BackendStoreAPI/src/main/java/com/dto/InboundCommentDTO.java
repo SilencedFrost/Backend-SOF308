@@ -9,7 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
-    private Integer roleId;
-    private String roleName;
+public class InboundCommentDTO implements CommentDTO{
+    private Long commentId;
+    private Long userId;
+    private Long productId;
+    private String commentContent;
 }

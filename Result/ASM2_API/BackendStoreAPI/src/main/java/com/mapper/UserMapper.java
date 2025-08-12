@@ -17,10 +17,12 @@ public class UserMapper {
         }
         return new OutboundUserDTO(
                 user.getUserId(),
-                user.getFullName(),
+                user.getUsername(),
                 user.getEmail(),
+                user.getCreationDate(),
                 user.getRole() != null ? user.getRole().getRoleName() : "null",
-                user.getCreationDate()
+                user.isActive(),
+                user.getLastLoginDate()
         );
     }
 
@@ -31,10 +33,11 @@ public class UserMapper {
 
         return new User(
                 userDTO.getUserId(),
-                userDTO.getPasswordHash(),
-                userDTO.getFullName(),
+                userDTO.getUsername(),
                 userDTO.getEmail(),
-                role
+                userDTO.getPasswordHash(),
+                role,
+                userDTO.isActive()
         );
     }
 
