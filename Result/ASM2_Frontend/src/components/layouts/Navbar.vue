@@ -57,6 +57,14 @@ export default {
                             Sự kiện
                         </a>
                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="/ProductDetail">
+                            <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/calendar-event.svg"
+                                alt="" width="20" height="20" class="me-2">
+                            Chi tiết sản phẩm
+                        </a>
+                    </li>
+
 
                     <!-- Account dropdown/collapse -->
                     <li class="nav-item dropdown">
