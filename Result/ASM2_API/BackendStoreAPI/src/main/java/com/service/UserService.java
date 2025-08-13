@@ -1,0 +1,263 @@
+package com.service;
+
+import com.dto.InboundUserDTO;
+import com.dto.UserDTO;
+import com.dto.VideoDTO;
+import com.entity.Role;
+import com.entity.User;
+import com.mapper.UserMapper;
+import com.security.PasswordHasher;
+import com.util.EntityManagerUtil;
+import com.util.ValidationUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.TypedQuery;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+@NoArgsConstructor
+public class UserService implements Service<UserDTO, String>{
+    private static final Logger logger = Logger.getLogger(UserService.class.getName());
+
+    @Override
+    public List<UserDTO> findAll() {
+        List<User> userList = null;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            userList = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+            logger.info("Fetched all users: " + userList.size() + " users found.");
+            return UserMapper.toDTOList(userList);
+        } catch (PersistenceException e) {
+            logger.log(Level.SEVERE, "Error fetching users", e);
+            return List.of();
+        }
+    }
+
+    @Override
+    public UserDTO findById(String userId) {
+        if (ValidationUtil.isNullOrBlank(userId)) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+
+        User user;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            user = em.find(User.class, userId.toLowerCase().trim());
+            logger.info("User with id " + userId + (user != null ? " found." : " not found."));
+            return user != null ? UserMapper.toDTO(user) : null;
+        } catch (PersistenceException e) {
+            logger.log(Level.SEVERE, "Error finding user by ID", e);
+            return null;
+        }
+    }
+
+    public List<UserDTO> findByIdLike(String partialId){
+        if (ValidationUtil.isNullOrBlank(partialId)) {
+            throw new IllegalArgumentException("Partial ID cannot be null or empty");
+        }
+
+        List<User> userList = null;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            userList = em.createQuery("SELECT u FROM User u WHERE LOWER(u.userId) LIKE LOWER(:partialId)", User.class).setParameter("partialId", "%" + partialId + "%").getResultList();
+            logger.info("Found " + userList.size() + " users with ID containing: " + partialId);
+            return UserMapper.toDTOList(userList);
+        } catch (PersistenceException e) {
+            logger.log(Level.SEVERE, "Error finding users by partial ID: " + partialId, e);
+            return List.of();
+        }
+    }
+
+    public UserDTO findByEmail(String email) {
+        if (ValidationUtil.isNullOrBlank(email)) {
+            throw new IllegalArgumentException("email cannot be null or empty");
+        }
+
+        User user;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.email) = LOWER(:email)", User.class).setParameter("email", email).getSingleResult();
+            logger.info("User with email " + email + (user != null ? " found." : " not found."));
+            return user != null ? UserMapper.toDTO(user) : null;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error finding user by email", e);
+            return null;
+        }
+    }
+
+    public UserDTO findByIdOrEmail(String idOrEmail) {
+        User user = null;
+        try(EntityManager em = EntityManagerUtil.getEntityManager()) {
+            user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.userId) = LOWER(:value) OR LOWER(u.email) = LOWER(:value)", User.class).setParameter("value", idOrEmail).getSingleResult();
+            return UserMapper.toDTO(user);
+        } catch (PersistenceException e) {
+            logger.log(Level.SEVERE, "Error fetching users", e);
+            return null;
+        }
+    }
+
+    public boolean validateUser(String password, String userId) {
+        if (ValidationUtil.isNullOrBlank(userId)) {
+            throw new IllegalArgumentException("ID cannot be null or empty");
+        }
+
+        User user = null;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            user = em.find(User.class, userId.toLowerCase().trim());
+            logger.info("User with id " + userId + (user != null ? " found." : " not found."));
+        } catch (PersistenceException e) {
+            logger.log(Level.SEVERE, "Error finding user by ID", e);
+        }
+        if(user != null) {
+            return PasswordHasher.verify(password, user.getPasswordHash());
+        } else {
+            return false;
+        }
+    }
+
+    // Manual creation method
+    public boolean create(String userId, String password, String fullName, String email, String roleName) {
+        return create(new InboundUserDTO(userId, password, fullName, email, roleName));
+    }
+
+    @Override
+    public boolean create(UserDTO userDTO) {
+        if (!(userDTO instanceof InboundUserDTO)) {
+            logger.warning("Create requires InboundUserDTO for security reasons");
+            return false;
+        }
+        return create((InboundUserDTO) userDTO);
+    }
+
+    // Object creation method
+    public boolean create(InboundUserDTO userDTO) {
+        if (userDTO == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            Role role = RoleService.findByRoleName(em, userDTO.getRoleName());
+            if(role == null) {
+                logger.warning("Role not found");
+                return false;
+            }
+            EntityTransaction tx = em.getTransaction();
+            try {
+                tx.begin();
+                User user = UserMapper.toEntity(userDTO, null);
+                role.addUser(user);
+                em.persist(user);
+                tx.commit();
+                logger.info("User created: " + user);
+                return true;
+            } catch (PersistenceException e) {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+                logger.log(Level.SEVERE, "Error creating user", e);
+                return false;
+            }
+        }
+    }
+
+    public boolean update(String userId, String password, String fullName, String email, String roleName) {
+        return update(new InboundUserDTO(userId, password, fullName, email, roleName));
+    }
+
+    @Override
+    public boolean update(UserDTO userDTO) {
+        if (!(userDTO instanceof InboundUserDTO)) {
+            logger.warning("Update requires InboundUserDTO for security reasons");
+            return false;
+        }
+        return update((InboundUserDTO) userDTO);
+    }
+
+    // Object update method
+    public boolean update(InboundUserDTO userDTO) {
+        if (userDTO == null || ValidationUtil.isNullOrBlank(userDTO.getUserId())) {
+            logger.warning("User or User ID cannot be null or empty");
+            return false;
+        }
+
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            EntityTransaction tx = em.getTransaction();
+            try {
+                User existingUser = em.find(User.class, userDTO.getUserId());
+                if (existingUser != null) {
+                    tx.begin();
+                    if(!ValidationUtil.isNullOrBlank(userDTO.getFullName())) existingUser.setFullName(userDTO.getFullName());
+                    if(!ValidationUtil.isNullOrBlank(userDTO.getPasswordHash())) existingUser.setPasswordHash(userDTO.getPasswordHash());
+                    if(!ValidationUtil.isNullOrBlank(userDTO.getEmail()) || ValidationUtil.isValidEmail(userDTO.getEmail())) existingUser.setEmail(userDTO.getEmail());
+                    if(!ValidationUtil.isNullOrBlank(userDTO.getRoleName())) {
+                        Role role = RoleService.findByRoleName(em, userDTO.getRoleName());
+                        if (role == null) role = em.find(Role.class, 1);
+                        role.addUser(existingUser);
+                    }
+                    tx.commit();
+                    logger.info("User with id " + userDTO.getUserId() + " updated successfully.");
+                    return true;
+                } else {
+                    logger.warning("User with id " + userDTO.getUserId() + " not found for update.");
+                    return false;
+                }
+            } catch (Exception e) {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+                logger.log(Level.SEVERE, "Error updating user", e);
+                return false;
+            }
+        }
+    }
+
+    //Manual delete method
+    @Override
+    public boolean delete(String userId) {
+        if (userId == null) {
+            logger.warning("ID cannot be null");
+            return false;
+        }
+        try(EntityManager em = EntityManagerUtil.getEntityManager()) {
+            EntityTransaction tx = em.getTransaction();
+            User user = em.find(User.class, userId);
+            if (user == null) {
+                logger.warning("User with id " + userId + " not found. Deletion skipped.");
+                return false;
+            }
+
+            try {
+                tx.begin();
+                em.remove(user);
+                new Role().removeUser(user);
+                tx.commit();
+                return true;
+            } catch (Exception e) {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+                logger.log(Level.SEVERE, "Error deleting user with id " + userId, e);
+                return false;
+            }
+        }
+    }
+
+    public List<VideoDTO> findFavouritedVideos(String userId) {
+        if(userId == null) return null;
+
+        List<Video> videoList;
+        try(EntityManager em = EntityManagerUtil.getEntityManager()) {
+            TypedQuery<Video> query = em.createQuery("SELECT f.video FROM Favourite f WHERE LOWER(f.user.id) = LOWER(:userId)", Video.class);
+            query.setParameter("userId", userId);
+            videoList = query.getResultList();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "", e);
+            return null;
+        }
+        return VideoMapper.toDTOList(videoList);
+    }
+
+    public List<VideoDTO> findFavouritedVideos(UserDTO userDTO) {
+        return findFavouritedVideos(userDTO.getUserId());
+    }
+}
