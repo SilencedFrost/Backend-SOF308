@@ -1,9 +1,6 @@
 package com.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -12,12 +9,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InboundProductDTO implements ProductDTO{
-    private String productName;
-    private BigDecimal price;
-    private Integer stockQuantity;
-    private String ImageUrl;
-    private boolean active;
-    private String productDescription;
-    private Integer categoryId;
-    private String specifications;
+    protected String productName;
+    protected BigDecimal price;
+    protected Integer stockQuantity;
+    protected String ImageUrl;
+    protected boolean active;
+    protected String productDescription;
+    protected Integer categoryId;
+    protected String specifications;
 }
