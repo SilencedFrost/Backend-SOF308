@@ -7,13 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class RoleDTO {
     private Integer roleId;
     private String roleName;
-
-    public RoleDTO(String roleName) {
-        this.roleName = roleName;
-    }
 }

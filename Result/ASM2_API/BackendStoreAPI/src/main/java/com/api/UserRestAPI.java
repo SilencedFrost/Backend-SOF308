@@ -1,6 +1,6 @@
 package com.api;
 
-import com.constants.UserFormFields;
+import com.constants.UserFields;
 import com.dto.UserDTO;
 import com.security.PasswordHasher;
 import com.service.UserService;
@@ -60,12 +60,12 @@ public class UserRestAPI extends HttpServlet {
                 }
                 userId = action.substring(requestUrl.length() + 1);
             } else {
-                userId = reqMap.get(UserFormFields.USER_ID.getPropertyKey());
+                userId = reqMap.get(UserFields.USER_ID.getPropertyKey());
             }
-            String password = reqMap.get(UserFormFields.PASSWORD.getPropertyKey());
-            String fullName = reqMap.get(UserFormFields.FULL_NAME.getPropertyKey());
-            String email = reqMap.get(UserFormFields.EMAIL.getPropertyKey());
-            String role = reqMap.get(UserFormFields.ROLE.getPropertyKey());
+            String password = reqMap.get(UserFields.PASSWORD.getPropertyKey());
+            String fullName = reqMap.get(UserFields.FULL_NAME.getPropertyKey());
+            String email = reqMap.get(UserFields.EMAIL.getPropertyKey());
+            String role = reqMap.get(UserFields.ROLE.getPropertyKey());
 
             // Field validation
             ValidationUtil.validateUserId(userId, errors);
@@ -112,19 +112,19 @@ public class UserRestAPI extends HttpServlet {
                 }
                 userId = action.substring(requestUrl.length() + 1);
             } else {
-                userId = reqMap.get(UserFormFields.USER_ID.getPropertyKey());
+                userId = reqMap.get(UserFields.USER_ID.getPropertyKey());
             }
-            String password = reqMap.get(UserFormFields.PASSWORD.getPropertyKey());
-            String fullName = reqMap.get(UserFormFields.FULL_NAME.getPropertyKey());
-            String email = reqMap.get(UserFormFields.EMAIL.getPropertyKey());
-            String role = reqMap.get(UserFormFields.ROLE.getPropertyKey());
+            String password = reqMap.get(UserFields.PASSWORD.getPropertyKey());
+            String fullName = reqMap.get(UserFields.FULL_NAME.getPropertyKey());
+            String email = reqMap.get(UserFields.EMAIL.getPropertyKey());
+            String role = reqMap.get(UserFields.ROLE.getPropertyKey());
 
             // Field validation
             // User Id
             if(ValidationUtil.isNullOrBlank(userId)) {
-                errors.put(UserFormFields.USER_ID.getErrorKey(), "User Id cannot be empty!");
+                errors.put(UserFields.USER_ID.getErrorKey(), "User Id cannot be empty!");
             } else if (userService.findById(userId) == null) {
-                errors.put(UserFormFields.USER_ID.getErrorKey(), "User Id does not exist");
+                errors.put(UserFields.USER_ID.getErrorKey(), "User Id does not exist");
             }
 
             // Full name
@@ -134,16 +134,16 @@ public class UserRestAPI extends HttpServlet {
             if(ValidationUtil.isNullOrBlank(email)) {
                 email = null;
             } else if (!ValidationUtil.isValidEmail(email)) {
-                errors.put(UserFormFields.EMAIL.getErrorKey(), "Email is invalid!");
+                errors.put(UserFields.EMAIL.getErrorKey(), "Email is invalid!");
             } else if (userService.findByEmail(email) != null) {
-                errors.put(UserFormFields.EMAIL.getErrorKey(), "Email already taken");
+                errors.put(UserFields.EMAIL.getErrorKey(), "Email already taken");
             }
 
             // Password
             if(ValidationUtil.isNullOrBlank(password)){
                 password = null;
             } else if (!ValidationUtil.isValidPassword(password)) {
-                errors.put(UserFormFields.PASSWORD.getErrorKey(), "8-32 characters with uppercase, lowercase, number & special character");
+                errors.put(UserFields.PASSWORD.getErrorKey(), "8-32 characters with uppercase, lowercase, number & special character");
             }
 
             // Role
@@ -187,15 +187,15 @@ public class UserRestAPI extends HttpServlet {
                 }
                 userId = action.substring(requestUrl.length() + 1);
             } else {
-                userId = reqMap.get(UserFormFields.USER_ID.getPropertyKey());
+                userId = reqMap.get(UserFields.USER_ID.getPropertyKey());
             }
 
             // Field validation
             // User Id
             if(ValidationUtil.isNullOrBlank(userId)) {
-                errors.put(UserFormFields.USER_ID.getErrorKey(), "User Id cannot be empty!");
+                errors.put(UserFields.USER_ID.getErrorKey(), "User Id cannot be empty!");
             } else if (userService.findById(userId) == null) {
-                errors.put(UserFormFields.USER_ID.getErrorKey(), "User Id does not exist");
+                errors.put(UserFields.USER_ID.getErrorKey(), "User Id does not exist");
             }
 
             if (errors.isEmpty()) {

@@ -12,6 +12,12 @@ export default {
       showSidebar: true // Có thể điều khiển việc hiển thị sidebar
     }
   },
+  computed: {
+    shouldShowSidebar() {
+      // Ẩn sidebar trên trang profile
+      return this.$route.path !== '/profile'
+    }
+  },
   methods: {
     handleFilterProducts(category) {
       // Xử lý filter sản phẩm từ sidebar
@@ -31,13 +37,13 @@ export default {
     
     <div class="d-flex flex-fill">
       <!-- Sidebar -->
-      <aside v-if="showSidebar" class="sidebar-container d-none d-lg-block">
+      <aside v-if="shouldShowSidebar" class="sidebar-container d-none d-lg-block">
         <Sidebar @filter-products="handleFilterProducts" />
       </aside>
       
       <!-- Mobile Sidebar (always rendered for mobile toggle) -->
       <Sidebar 
-        v-if="showSidebar" 
+        v-if="shouldShowSidebar" 
         @filter-products="handleFilterProducts" 
         class="d-lg-none"
       />

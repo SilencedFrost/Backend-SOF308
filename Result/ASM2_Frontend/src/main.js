@@ -10,13 +10,17 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 //Router
 import Home from '@/components/pages/Home.vue'
-import Post from '@/components/pages/Post.vue'
-import PostDetail from '@/components/pages/PostDetail.vue'
+import Profile from '@/components/pages/Profile.vue'
+import Cart from '@/components/pages/Cart.vue'
+import ProductDetail from '@/components/pages/ProductDetail.vue'
+import Login from '@/components/pages/Login.vue'
 
 const routes = [
     { path: '/', component: Home },
-    { path: '/post', component: Post },
-    { path: '/post/detail', component: PostDetail }
+    { path: '/profile', component: Profile},
+    { path: '/cart', component: Cart},
+    { path: '/product/:id', component: ProductDetail },
+    { path: '/login', component: Login}
 ]
 
 const router = createRouter({

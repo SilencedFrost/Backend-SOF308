@@ -51,7 +51,6 @@ export default {
                             Giỏ hàng
                         </router-link>
                     </li>
-
                     <!-- Account dropdown/collapse -->
                     <li class="nav-item dropdown">
                         <!-- Desktop dropdown -->
@@ -62,8 +61,8 @@ export default {
                             Tài khoản
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#">Đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+                           <router-link class="dropdown-item" to="/login">Đăng nhập</router-link>
+                            <li class="nav-item"><router-link class="nav-link ps-4" to="/logout">Đăng xuất</router-link></li>
                             <li><a class="dropdown-item" href="#">Quên mật khẩu</a></li>
                             <li><a class="dropdown-item" href="#">Đăng ký thành viên</a></li>
                             <li><router-link class="dropdown-item" to="/api/user">Quản lý tài khoản</router-link></li>

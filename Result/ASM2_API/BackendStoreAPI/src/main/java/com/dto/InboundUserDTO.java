@@ -9,21 +9,13 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class InboundUserDTO implements UserDTO{
-    private String userId;
-    private String passwordHash;
-    private String fullName;
+    private Long userId;
+    private String username;
     private String email;
+    private String passwordHash;
     private String roleName;
-    private LocalDateTime creationDate;
-
-    public InboundUserDTO(String userId, String passwordHash, String fullName, String email, String roleName) {
-        this.userId = userId;
-        this.passwordHash = passwordHash;
-        this.fullName = fullName;
-        this.email = email;
-        this.roleName = roleName;
-    }
+    private boolean active;
 }

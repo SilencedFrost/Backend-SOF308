@@ -7,14 +7,6 @@ public interface Automatable {
 
     String getPropertyKey();
 
-    String getLabel();
-
-    String getFieldType();
-
-    List<String> getSelectionData();
-
-
-
     default String getErrorKey() {
         return getPropertyKey() + "Error";
     }
