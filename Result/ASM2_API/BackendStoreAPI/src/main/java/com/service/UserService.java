@@ -116,8 +116,8 @@ public class UserService implements Service<UserDTO, String>{
     }
 
     // Manual creation method
-    public boolean create(Long userId, String username, String email, String passwordHash, String roleName, boolean active) {
-        return create(new InboundUserDTO(userId, username, email, passwordHash, roleName, active));
+    public boolean create(String username, String email, String passwordHash, String roleName, boolean active) {
+        return create(new InboundUserDTO(username, email, passwordHash, roleName, active));
     }
 
     @Override
