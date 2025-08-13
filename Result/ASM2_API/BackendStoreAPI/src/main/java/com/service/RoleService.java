@@ -159,7 +159,7 @@ public class RoleService implements Service<RoleDTO, Integer> {
                     return false;
                 }
 
-                // Safe to delete
+                //git  Safe to delete
                 em.remove(role);
                 tx.commit();
                 logger.info("Role with id " + roleId + " successfully deleted");
