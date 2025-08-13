@@ -73,7 +73,7 @@ export default {
 
 <template>
     <!-- Promotion Carousel -->
-    <section class="py-5 bg-light">
+    <section class="py-5 bg-white">
         <div class="container">
             <div class="text-center mb-4">
                 <h2 class="fw-bold">🔥 Ưu đãi hấp dẫn</h2>
@@ -184,10 +184,8 @@ export default {
             </div>
             <div class="row g-4 justify-content-center">
                 <div class="col-lg-4 col-md-4 col-6" v-for="category in categories" :key="category.name">
-                    <div class="text-center p-3 h-100 border rounded shadow-sm" 
-                         @click="viewCategory(category.name)" style="cursor: pointer; transition: transform 0.2s;" 
-                         onmouseover="this.style.transform='translateY(-5px)'" 
-                         onmouseout="this.style.transform='translateY(0)'">
+                    <div class="text-center p-3 h-100 border rounded shadow-sm card-hover" 
+                         @click="viewCategory(category.name)" style="cursor: pointer;">
                         <div class="mb-3">
                             <img :src="category.image" :alt="category.name" 
                                  class="img-fluid rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
@@ -201,7 +199,7 @@ export default {
     </section>
 
     <!-- Featured Products Section -->
-    <section class="py-5 bg-light">
+    <section class="py-5 bg-white">
         <div class="container">
             <div class="text-center mb-5">
                 <h2 class="fw-bold">Sản phẩm nổi bật</h2>
@@ -209,10 +207,8 @@ export default {
             </div>
             <div class="row g-4 justify-content-center">
                 <div class="col-lg-4 col-md-6 col-sm-12" v-for="product in featuredProducts" :key="product.id">
-                    <div class="card h-100 shadow-sm" style="transition: transform 0.2s;" 
-                         onmouseover="this.style.transform='translateY(-5px)'" 
-                         onmouseout="this.style.transform='translateY(0)'">
-                        <div class="position-relative">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <div class="position-relative" @click="viewProduct(product.id)" style="cursor: pointer;">
                             <img :src="product.image" :alt="product.name" class="card-img-top" style="height: 250px; object-fit: cover;">
                             <span class="badge bg-danger position-absolute top-0 start-0 m-2">
                                 -{{ product.discount }}
@@ -232,13 +228,10 @@ export default {
                                     {{ formatPrice(product.originalPrice) }}₫
                                 </small>
                             </div>
-                            <div class="mt-auto d-flex gap-2">
-                                <button class="btn btn-primary flex-fill" @click="addToCart(product)">
+                            <div class="mt-auto">
+                                <button class="btn btn-primary w-100" @click="addToCart(product)">
                                     <i class="bi bi-cart-plus me-1"></i>
                                     Thêm giỏ hàng
-                                </button>
-                                <button class="btn btn-outline-secondary" @click="viewProduct(product.id)">
-                                    <i class="bi bi-eye"></i>
                                 </button>
                             </div>
                         </div>
@@ -255,5 +248,16 @@ export default {
 
 
 </template>
+
+<style scoped>
+.card-hover {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+</style>
 
 
