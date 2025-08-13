@@ -1,6 +1,11 @@
 <script>
+import Sidebar from '@/components/layouts/Sidebar.vue'
+
 export default {
     name: 'Home',
+    components: {
+        Sidebar
+    },
     data() {
         return {
             featuredProducts: [
@@ -95,14 +100,24 @@ export default {
         },
         viewCategory(categoryName) {
             this.$router.push(`/category/${categoryName.toLowerCase()}`);
+        },
+        handleFilterProducts(category) {
+            console.log('Filtering products by category:', category);
+            this.$router.push({ path: '/products', query: { category } });
         }
     }
 }
 </script>
 
 <template>
-    <!-- Promotion Carousel -->
-    <section class="promotion-carousel py-5">
+    <div class="d-flex min-vh-100">
+        <!-- Sidebar -->
+        <Sidebar @filter-products="handleFilterProducts" />
+        
+        <!-- Main Content -->
+        <div class="flex-fill">
+            <!-- Promotion Carousel -->
+        <section class="promotion-carousel py-5">
         <div class="container">
             <div class="text-center mb-4">
                 <h2 class="fw-bold">🔥 Ưu đãi hấp dẫn</h2>
@@ -364,8 +379,8 @@ export default {
             </div>
         </div>
     </section>
-
-
+        </div> <!-- Close flex-fill -->
+    </div> <!-- Close d-flex -->
 </template>
 
 <style scoped>
@@ -564,5 +579,14 @@ export default {
     .promotion-slide {
         text-align: center;
     }
+}
+
+/* Layout styles */
+.d-flex {
+    display: flex;
+}
+
+.flex-fill {
+    flex: 1;
 }
 </style>
