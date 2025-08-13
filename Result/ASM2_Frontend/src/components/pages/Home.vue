@@ -184,7 +184,9 @@ export default {
             </div>
             <div class="row g-4 justify-content-center">
                 <div class="col-lg-4 col-md-4 col-6" v-for="category in categories" :key="category.name">
-                    <div class="text-center p-3 h-100 border rounded shadow-sm card-hover" 
+                    <div class="text-center p-3 h-100 border rounded shadow-sm" 
+                         @mouseover="$event.currentTarget.classList.add('shadow-lg')" 
+                         @mouseout="$event.currentTarget.classList.remove('shadow-lg')"
                          @click="viewCategory(category.name)" style="cursor: pointer;">
                         <div class="mb-3">
                             <img :src="category.image" :alt="category.name" 
@@ -207,7 +209,7 @@ export default {
             </div>
             <div class="row g-4 justify-content-center">
                 <div class="col-lg-4 col-md-6 col-sm-12" v-for="product in featuredProducts" :key="product.id">
-                    <div class="card h-100 shadow-sm card-hover">
+                    <div class="card h-100 shadow-sm" @mouseover="$event.currentTarget.classList.add('shadow-lg')" @mouseout="$event.currentTarget.classList.remove('shadow-lg')">
                         <div class="position-relative" @click="viewProduct(product.id)" style="cursor: pointer;">
                             <img :src="product.image" :alt="product.name" class="card-img-top" style="height: 250px; object-fit: cover;">
                             <span class="badge bg-danger position-absolute top-0 start-0 m-2">
@@ -249,15 +251,6 @@ export default {
 
 </template>
 
-<style scoped>
-.card-hover {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
 
-.card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-}
-</style>
 
 
