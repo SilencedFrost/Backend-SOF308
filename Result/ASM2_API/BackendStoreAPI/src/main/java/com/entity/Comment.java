@@ -60,8 +60,7 @@ public class Comment {
 		this.commentDate = LocalDateTime.now();
 	}
 
-	public Comment(Long commentId, User user, Product product, String commentContent) {
-		this.commentId = commentId;
+	public Comment(User user, Product product, String commentContent) {
 		setUser(user);
 		setProduct(product);
 		this.commentContent = commentContent;

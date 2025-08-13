@@ -32,7 +32,6 @@ public class UserMapper {
         }
 
         return new User(
-                userDTO.getUserId(),
                 userDTO.getUsername(),
                 userDTO.getEmail(),
                 userDTO.getPasswordHash(),

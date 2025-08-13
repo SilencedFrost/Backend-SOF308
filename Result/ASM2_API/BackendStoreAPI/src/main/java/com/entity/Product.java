@@ -72,8 +72,7 @@ public class Product {
         this.creationDate = LocalDateTime.now();
     }
 
-    public Product(Long productId, String productName, BigDecimal price, Integer stockQuantity, String imageUrl, boolean active, String productDescription, Category category, String specifications) {
-        this.productId = productId;
+    public Product(String productName, BigDecimal price, Integer stockQuantity, String imageUrl, boolean active, String productDescription, Category category, String specifications) {
         this.productName = productName;
         this.price = price;
         this.stockQuantity = stockQuantity;

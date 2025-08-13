@@ -64,8 +64,7 @@ public class User {
         this.creationDate = LocalDateTime.now();
     }
 
-    public User(Long userId, String username, String email, String passwordHash, Role role, boolean active) {
-        this.userId = userId;
+    public User(String username, String email, String passwordHash, Role role, boolean active) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;

@@ -24,8 +24,7 @@ public class Role {
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<>();
 
-    public Role(Integer roleId, String roleName) {
-        this.roleId = roleId;
+    public Role(String roleName) {
         this.roleName = roleName;
     }
 }

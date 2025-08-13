@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InboundProductDTO implements ProductDTO{
-    private Long productId;
     private String productName;
     private BigDecimal price;
     private Integer stockQuantity;

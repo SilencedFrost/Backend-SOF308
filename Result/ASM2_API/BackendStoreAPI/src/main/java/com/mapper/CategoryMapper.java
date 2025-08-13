@@ -27,7 +27,6 @@ public class CategoryMapper {
         }
 
         return new Category(
-                categoryDTO.getCategoryId(),
                 categoryDTO.getCategoryName()
         );
     }
