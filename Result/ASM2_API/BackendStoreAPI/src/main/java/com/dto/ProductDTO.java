@@ -10,5 +10,4 @@ public interface ProductDTO {
     public boolean isActive();
     public String getProductDescription();
     public Integer getCategoryId();
-    public String getSpecifications();
 }

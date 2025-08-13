@@ -5,16 +5,31 @@ import com.dto.OutboundProductDTO;
 import com.dto.ProductDTO;
 import com.entity.Category;
 import com.entity.Product;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductMapper {
 
-    public static ProductDTO toDTO(Product product) {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    public static OutboundProductDTO toDTO(Product product) {
         if (product == null) {
             return null;
         }
+
+        JsonNode specsNode = null;
+        try {
+            if (product.getSpecifications() != null && !product.getSpecifications().isBlank()) {
+                specsNode = objectMapper.readTree(product.getSpecifications());
+            }
+        } catch (IOException e) {
+            specsNode = objectMapper.createObjectNode();
+        }
+
         return new OutboundProductDTO(
                 product.getProductId(),
                 product.getProductName(),
@@ -24,7 +39,7 @@ public class ProductMapper {
                 product.isActive(),
                 product.getProductDescription(),
                 product.getCategory().getCategoryId(),
-                product.getSpecifications(),
+                specsNode,
                 product.getCreationDate(),
                 product.getCarts().size(),
                 product.getComments().size()
@@ -48,8 +63,8 @@ public class ProductMapper {
         );
     }
 
-    public static List<ProductDTO> toDTOList(List<Product> entityList) {
-        List<ProductDTO> dtoList = new ArrayList<>();
+    public static List<OutboundProductDTO> toDTOList(List<Product> entityList) {
+        List<OutboundProductDTO> dtoList = new ArrayList<>();
         for (Product product : entityList) {
             dtoList.add(ProductMapper.toDTO(product));
         }

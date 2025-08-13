@@ -1,5 +1,6 @@
 package com.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class OutboundProductDTO implements ProductDTO{
     private boolean active;
     private String productDescription;
     private Integer categoryId;
-    private String specifications;
+    private JsonNode specifications;
     private LocalDateTime creationDate;
     private Integer cartCount;
     private Integer commentCount;

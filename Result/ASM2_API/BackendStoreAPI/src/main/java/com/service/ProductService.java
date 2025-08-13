@@ -1,5 +1,6 @@
 package com.service;
 
+import com.dto.OutboundProductDTO;
 import com.dto.ProductDTO;
 import com.dto.InboundProductDTO;
 import com.dto.UpdateProductDTO;
@@ -20,8 +21,8 @@ public class ProductService implements Service<ProductDTO, Integer> {
     private static final Logger logger = Logger.getLogger(ProductService.class.getName());
 
     @Override
-    public List<ProductDTO> findAll() {
-        List<Product> productList = null;
+    public List<OutboundProductDTO> findAll() {
+        List<Product> productList;
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
             productList = em.createQuery("SELECT r FROM Product r", Product.class).getResultList();
             logger.info("Fetched all products: " + productList.size() + " products found.");
@@ -46,6 +47,18 @@ public class ProductService implements Service<ProductDTO, Integer> {
         } catch (PersistenceException e) {
             logger.log(Level.SEVERE, "Error finding product by ID", e);
             return null;
+        }
+    }
+
+    public List<OutboundProductDTO> findByCategory(Integer categoryId) {
+        List<Product> productList;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            productList = em.createQuery("SELECT p FROM Product p WHERE p.category.categoryId = :categoryId", Product.class).setParameter("categoryId", categoryId).getResultList();
+            logger.info("Fetched all products: " + productList.size() + " products found.");
+            return ProductMapper.toDTOList(productList);
+        } catch (PersistenceException e) {
+            logger.log(Level.SEVERE, "Error fetching products", e);
+            return List.of();
         }
     }
 

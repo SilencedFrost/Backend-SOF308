@@ -2,6 +2,7 @@ package com.service;
 
 import com.dto.InboundCategoryDTO;
 import com.dto.CategoryDTO;
+import com.dto.OutboundCategoryDTO;
 import com.dto.UpdateCategoryDTO;
 import com.entity.Category;
 import com.mapper.CategoryMapper;
@@ -17,8 +18,8 @@ public class CategoryService implements Service<CategoryDTO, Integer> {
     private static final Logger logger = Logger.getLogger(CategoryService.class.getName());
 
     @Override
-    public List<CategoryDTO> findAll() {
-        List<Category> categoryList = null;
+    public List<OutboundCategoryDTO> findAll() {
+        List<Category> categoryList;
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
             categoryList = em.createQuery("SELECT r FROM Category r", Category.class).getResultList();
             logger.info("Fetched all categories: " + categoryList.size() + " categories found.");
@@ -30,7 +31,7 @@ public class CategoryService implements Service<CategoryDTO, Integer> {
     }
 
     @Override
-    public CategoryDTO findById(Integer categoryId) {
+    public OutboundCategoryDTO findById(Integer categoryId) {
         if (categoryId == null) {
             throw new IllegalArgumentException("ID cannot be null or empty");
         }
