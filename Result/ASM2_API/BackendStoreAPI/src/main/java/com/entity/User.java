@@ -48,8 +48,13 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     public void setRole(Role role) {
+        if (this.role != null) {
+            this.role.getUsers().remove(this);
+        }
+
         this.role = role;
-        if (role != null && !role.getUsers().contains(this)) {
+
+        if (role != null) {
             role.getUsers().add(this);
         }
     }
