@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Role {
 
     @Id
@@ -33,5 +32,10 @@ public class Role {
     public void removeUser(User user) {
         users.remove(user);
         user.setRole(null);
+    }
+
+    public Role(Integer roleId, String roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
     }
 }

@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Product {
 
     @Id
@@ -56,8 +55,34 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    public void setCategory(Category category) {
+        if (this.category != null) {
+            this.category.getProducts().remove(this);
+        }
+
+        this.category = category;
+
+        if (category != null) {
+            category.getProducts().add(this);
+        }
+    }
+
     @PrePersist
     protected void onCreate() {
         this.creationDate = LocalDateTime.now();
+    }
+
+    public Product(Long productId, String productName, BigDecimal price, Integer stockQuantity, String imageUrl, boolean active, String productDescription, Category category, String specifications) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.imageUrl = imageUrl;
+        this.active = active;
+        this.productDescription = productDescription;
+        setCategory(category);
+        this.specifications = specifications;
+        this.carts = new ArrayList<>();
+        this.comments = new ArrayList<>();
     }
 }
