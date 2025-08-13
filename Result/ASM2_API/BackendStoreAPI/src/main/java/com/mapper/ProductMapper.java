@@ -3,7 +3,7 @@ package com.mapper;
 import com.dto.InboundProductDTO;
 import com.dto.OutboundProductDTO;
 import com.dto.ProductDTO;
-import com.entity.Role;
+import com.entity.Category;
 import com.entity.Product;
 
 import java.util.ArrayList;
@@ -31,18 +31,21 @@ public class ProductMapper {
         );
     }
 
-    public static Product toEntity(InboundProductDTO productDTO, Role role) {
+    public static Product toEntity(InboundProductDTO productDTO, Category category) {
         if (productDTO == null) {
             return null;
         }
 
         return new Product(
                 productDTO.getProductId(),
-                productDTO.getProductname(),
-                productDTO.getEmail(),
-                productDTO.getPasswordHash(),
-                role,
-                productDTO.isActive()
+                productDTO.getProductName(),
+                productDTO.getPrice(),
+                productDTO.getStockQuantity(),
+                productDTO.getImageUrl(),
+                productDTO.isActive(),
+                productDTO.getProductDescription(),
+                category,
+                productDTO.getSpecifications()
         );
     }
 

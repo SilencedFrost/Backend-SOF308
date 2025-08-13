@@ -82,7 +82,5 @@ public class Product {
         this.productDescription = productDescription;
         setCategory(category);
         this.specifications = specifications;
-        this.carts = new ArrayList<>();
-        this.comments = new ArrayList<>();
     }
 }
