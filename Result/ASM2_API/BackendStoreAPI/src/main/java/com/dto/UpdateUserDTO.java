@@ -1,14 +1,14 @@
 package com.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRoleDTO extends InboundRoleDTO{
-    private Integer roleId;
+public class UpdateUserDTO extends InboundUserDTO{
+    private Long userId;
+
+    public UpdateUserDTO(super()
 }

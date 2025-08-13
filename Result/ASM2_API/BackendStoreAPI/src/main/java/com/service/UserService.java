@@ -1,8 +1,8 @@
 package com.service;
 
 import com.dto.InboundUserDTO;
+import com.dto.UpdateUserDTO;
 import com.dto.UserDTO;
-import com.dto.VideoDTO;
 import com.entity.Role;
 import com.entity.User;
 import com.mapper.UserMapper;
@@ -13,13 +13,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@NoArgsConstructor
 public class UserService implements Service<UserDTO, String>{
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
 
@@ -53,22 +51,6 @@ public class UserService implements Service<UserDTO, String>{
         }
     }
 
-    public List<UserDTO> findByIdLike(String partialId){
-        if (ValidationUtil.isNullOrBlank(partialId)) {
-            throw new IllegalArgumentException("Partial ID cannot be null or empty");
-        }
-
-        List<User> userList = null;
-        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
-            userList = em.createQuery("SELECT u FROM User u WHERE LOWER(u.userId) LIKE LOWER(:partialId)", User.class).setParameter("partialId", "%" + partialId + "%").getResultList();
-            logger.info("Found " + userList.size() + " users with ID containing: " + partialId);
-            return UserMapper.toDTOList(userList);
-        } catch (PersistenceException e) {
-            logger.log(Level.SEVERE, "Error finding users by partial ID: " + partialId, e);
-            return List.of();
-        }
-    }
-
     public UserDTO findByEmail(String email) {
         if (ValidationUtil.isNullOrBlank(email)) {
             throw new IllegalArgumentException("email cannot be null or empty");
@@ -85,10 +67,26 @@ public class UserService implements Service<UserDTO, String>{
         }
     }
 
-    public UserDTO findByIdOrEmail(String idOrEmail) {
+    public UserDTO findByUsername(String username) {
+        if (ValidationUtil.isNullOrBlank(username)) {
+            throw new IllegalArgumentException("username cannot be null or empty");
+        }
+
+        User user;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:username)", User.class).setParameter("username", username).getSingleResult();
+            logger.info("User with username " + username + (user != null ? " found." : " not found."));
+            return user != null ? UserMapper.toDTO(user) : null;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error finding user by username", e);
+            return null;
+        }
+    }
+
+    public UserDTO findByUsernameOrEmail(String usernameOrEmail) {
         User user = null;
         try(EntityManager em = EntityManagerUtil.getEntityManager()) {
-            user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.userId) = LOWER(:value) OR LOWER(u.email) = LOWER(:value)", User.class).setParameter("value", idOrEmail).getSingleResult();
+            user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:value) OR LOWER(u.email) = LOWER(:value)", User.class).setParameter("value", usernameOrEmail).getSingleResult();
             return UserMapper.toDTO(user);
         } catch (PersistenceException e) {
             logger.log(Level.SEVERE, "Error fetching users", e);
@@ -144,8 +142,8 @@ public class UserService implements Service<UserDTO, String>{
             EntityTransaction tx = em.getTransaction();
             try {
                 tx.begin();
-                User user = UserMapper.toEntity(userDTO, null);
-                role.addUser(user);
+                User user = UserMapper.toEntity(userDTO, role);
+                user.setRole(role);
                 em.persist(user);
                 tx.commit();
                 logger.info("User created: " + user);
@@ -160,8 +158,8 @@ public class UserService implements Service<UserDTO, String>{
         }
     }
 
-    public boolean update(String userId, String password, String fullName, String email, String roleName) {
-        return update(new InboundUserDTO(userId, password, fullName, email, roleName));
+    public boolean update(Long userId, String username, String email, String passwordHash, String roleName, boolean active) {
+        return update(new UpdateUserDTO(username, email, passwordHash, roleName, active, userId));
     }
 
     @Override
