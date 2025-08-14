@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
+    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%">
       <h3 class="mb-4 text-center text-primary">Đăng nhập</h3>
       <form @submit.prevent="onLogin">
         <div class="mb-3">
@@ -44,49 +44,49 @@
 
 <script>
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
-      username: "",
-      password: "",
-      error: "",
-    };
+      username: '',
+      password: '',
+      error: '',
+    }
   },
   methods: {
     async onLogin() {
-      this.error = "";
+      this.error = ''
       if (!this.username || !this.password) {
-        this.error = "Vui lòng nhập đầy đủ thông tin!";
-        return;
+        this.error = 'Vui lòng nhập đầy đủ thông tin!'
+        return
       }
       try {
-        const res = await fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             username: this.username,
             password: this.password,
           }),
-        });
+        })
         if (!res.ok) {
-          this.error = "Tên đăng nhập hoặc mật khẩu không đúng!";
-          return;
+          this.error = 'Tên đăng nhập hoặc mật khẩu không đúng!'
+          return
         }
-        const data = await res.json();
-        localStorage.setItem("user", JSON.stringify(data));
-        this.$router.push("/");
+        const data = await res.json()
+        localStorage.setItem('user', JSON.stringify(data))
+        this.$router.push('/')
       } catch (err) {
-        this.error = "Có lỗi xảy ra, vui lòng thử lại!";
+        this.error = 'Có lỗi xảy ra, vui lòng thử lại!'
       }
     },
     loginWithGoogle() {
       // Redirect to Google OAuth (ví dụ)
-      window.location.href = "/api/login/google";
+      window.location.href = '/api/login/google'
     },
     logout() {
-      localStorage.removeItem("user");
-      this.$router.push("/");
-    }
+      localStorage.removeItem('user')
+      this.$router.push('/')
+    },
   },
-};
+}
 </script>
