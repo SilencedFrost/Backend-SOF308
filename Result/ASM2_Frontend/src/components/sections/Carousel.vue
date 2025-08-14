@@ -2,7 +2,7 @@
 <template>
   <!-- Promotion Carousel -->
   <section class="py-5 bg-white">
-    <div class="container">
+    <div class="container-fluid">
       <div class="text-center mb-4">
         <h2 class="fw-bold">🔥 Ưu đãi hấp dẫn</h2>
         <p class="text-muted">Khuyến mãi đặc biệt - Số lượng có hạn</p>

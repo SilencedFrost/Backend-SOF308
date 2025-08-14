@@ -34,7 +34,7 @@ public class ProductService implements Service<ProductDTO, Integer> {
     }
 
     @Override
-    public ProductDTO findById(Integer productId) {
+    public OutboundProductDTO findById(Integer productId) {
         if (productId == null) {
             throw new IllegalArgumentException("ID cannot be null or empty");
         }
