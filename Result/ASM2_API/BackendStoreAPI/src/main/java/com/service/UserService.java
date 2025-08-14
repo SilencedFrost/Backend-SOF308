@@ -1,6 +1,7 @@
 package com.service;
 
 import com.dto.InboundUserDTO;
+import com.dto.OutboundUserDTO;
 import com.dto.UpdateUserDTO;
 import com.dto.UserDTO;
 import com.entity.Role;
@@ -83,7 +84,7 @@ public class UserService implements Service<UserDTO, Long>{
         }
     }
 
-    public UserDTO findByUsernameOrEmail(String usernameOrEmail) {
+    public OutboundUserDTO findByUsernameOrEmail(String usernameOrEmail) {
         User user = null;
         try(EntityManager em = EntityManagerUtil.getEntityManager()) {
             user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:value) OR LOWER(u.email) = LOWER(:value)", User.class).setParameter("value", usernameOrEmail).getSingleResult();
@@ -94,14 +95,15 @@ public class UserService implements Service<UserDTO, Long>{
         }
     }
 
-    public boolean validateUser(String password, String userId) {
-        if (ValidationUtil.isNullOrBlank(userId)) {
-            throw new IllegalArgumentException("ID cannot be null or empty");
+    public boolean validateUser(String password, Long userId) {
+        if (userId == null) {
+            logger.warning("ID is null, aborting validation");
+            return false;
         }
 
         User user = null;
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
-            user = em.find(User.class, userId.toLowerCase().trim());
+            user = em.find(User.class, userId);
             logger.info("User with id " + userId + (user != null ? " found." : " not found."));
         } catch (PersistenceException e) {
             logger.log(Level.SEVERE, "Error finding user by ID", e);
