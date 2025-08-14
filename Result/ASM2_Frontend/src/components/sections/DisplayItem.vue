@@ -28,7 +28,6 @@ function formatPrice(price) {
     <div class="position-relative" @click="viewProduct()" style="cursor: pointer">
       <img :src="product.imageUrl" :alt="product.productName" class="card-img-top p-2" />
       <hr />
-      {{ product.imageUrl }}
     </div>
     <div class="card-body d-flex flex-column">
       <h6 class="card-title fw-bold">{{ product.productName }}</h6>

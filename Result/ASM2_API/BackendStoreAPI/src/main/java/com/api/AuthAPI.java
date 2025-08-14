@@ -2,7 +2,6 @@ package com.api;
 
 import com.constants.AuthFields;
 import com.dto.OutboundUserDTO;
-import com.security.PasswordHasher;
 import com.service.UserService;
 import com.util.JsonUtil;
 import jakarta.servlet.ServletException;
