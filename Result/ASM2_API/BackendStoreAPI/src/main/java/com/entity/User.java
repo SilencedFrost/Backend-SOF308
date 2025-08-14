@@ -48,8 +48,13 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
     public void setRole(Role role) {
+        if (this.role != null) {
+            this.role.getUsers().remove(this);
+        }
+
         this.role = role;
-        if (role != null && !role.getUsers().contains(this)) {
+
+        if (role != null) {
             role.getUsers().add(this);
         }
     }
@@ -59,8 +64,7 @@ public class User {
         this.creationDate = LocalDateTime.now();
     }
 
-    public User(Long userId, String username, String email, String passwordHash, Role role, boolean active) {
-        this.userId = userId;
+    public User(String username, String email, String passwordHash, Role role, boolean active) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;

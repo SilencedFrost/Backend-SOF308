@@ -3,7 +3,6 @@ package com.dto;
 import java.math.BigDecimal;
 
 public interface ProductDTO {
-    public Long getProductId();
     public String getProductName();
     public BigDecimal getPrice();
     public Integer getStockQuantity();
@@ -11,5 +10,4 @@ public interface ProductDTO {
     public boolean isActive();
     public String getProductDescription();
     public Integer getCategoryId();
-    public String getSpecifications();
 }

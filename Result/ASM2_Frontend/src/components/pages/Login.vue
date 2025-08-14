@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
+    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%">
       <h3 class="mb-4 text-center text-primary">Đăng nhập</h3>
       <form @submit.prevent="onLogin">
         <div class="mb-3">
@@ -57,7 +57,7 @@
 
 <script>
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       username: "",
@@ -80,10 +80,9 @@ export default {
     async onLogin() {
       this.error = "";
       this.success = "";
-      
       if (!this.username || !this.password) {
-        this.error = "Vui lòng nhập đầy đủ thông tin!";
-        return;
+        this.error = 'Vui lòng nhập đầy đủ thông tin!'
+        return
       }
       
       this.isLoading = true;
@@ -150,5 +149,5 @@ export default {
       window.location.reload();
     }
   },
-};
+}
 </script>

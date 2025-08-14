@@ -1,29 +1,16 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import App from './App.vue'
+import { createPinia } from 'pinia'
 
-// Import Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
-//Router
-import Home from '@/components/pages/Home.vue'
-import Profile from '@/components/pages/Profile.vue'
-import Cart from '@/components/pages/Cart.vue'
-import ProductDetail from '@/components/pages/ProductDetail.vue'
-import Login from '@/components/pages/Login.vue'
+import App from './App.vue'
+import router from './router'
 
-const routes = [
-    { path: '/', component: Home},
-    { path: '/profile', component: Profile},
-    { path: '/cart', component: Cart},
-    { path: '/product/:id', component: ProductDetail},
-    { path: '/login', component: Login}
-]
+const app = createApp(App)
 
-const router = createRouter({
-    history: createWebHistory(),
-    routes
-})
+app.use(createPinia())
+app.use(router)
 
-createApp(App).use(router).mount('#app')
+app.mount('#app')
