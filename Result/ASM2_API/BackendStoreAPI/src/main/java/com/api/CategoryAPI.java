@@ -18,6 +18,12 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
+/* Endpoints:
+/api/categories -> return all categories
+/api/categories/:id -> return category matching id
+/api/categories/products return all categories along with products
+/api/categories/:id/products return category matching id along with products
+ */
 @WebServlet("/api/categories/*")
 public class CategoryAPI extends HttpServlet {
     private static final Logger logger = Logger.getLogger(CategoryAPI.class.getName());

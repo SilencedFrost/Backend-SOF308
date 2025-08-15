@@ -15,6 +15,11 @@ import java.util.logging.Logger;
 
 import static com.util.ServletUtil.getAction;
 
+/* Endpoints:
+/api/products -> return all products
+/api/products/:id -> return product matching id
+/api/products/search/:keyword return context-matched keyword
+ */
 @WebServlet("/api/products/*")
 public class ProductAPI extends HttpServlet {
     private static final Logger logger = Logger.getLogger(ProductAPI.class.getName());

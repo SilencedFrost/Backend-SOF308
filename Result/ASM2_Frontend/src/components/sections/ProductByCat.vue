@@ -30,9 +30,15 @@ onMounted(fetchCategories)
       {{ error }}
     </div>
     <div v-else>
-      <div v-for="category in categories" :key="category.categoryId" class="">
-        <div class="text-center mt-5">
-          <h1 class="fw-bold">{{ category.categoryName }}</h1>
+      <section
+        v-for="category in categories"
+        :key="category.categoryId"
+        :id="'category' + category.categoryId"
+      >
+        <div class="text-center my-4">
+          <h1 class="fw-bold">
+            {{ category.categoryName }}
+          </h1>
         </div>
         <div class="row g-3">
           <div
@@ -44,10 +50,16 @@ onMounted(fetchCategories)
           </div>
         </div>
         <hr />
-      </div>
+      </section>
       <div v-if="categories.length === 0" class="alert alert-warning mt-2">
         No categories found.
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+section {
+  scroll-margin-top: 80px; /* match your sticky header height */
+}
+</style>

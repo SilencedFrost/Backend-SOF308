@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import logoImage from '@/assets/images/logo-energy-pilates.png'
+import logoImage from '@/assets/images/logo.png'
 
 const searchQuery = ref('')
 const router = useRouter()
@@ -9,15 +9,21 @@ const router = useRouter()
 function onSearch() {
   router.push({ path: '/search', query: { q: searchQuery.value } })
 }
+
+function goHome() {
+  router.push('/').then(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' }) // scroll to top
+  })
+}
 </script>
 
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
     <div class="container-fluid d-flex align-items-center">
       <!-- Logo -->
-      <a class="navbar-brand flex-shrink-0" href="/">
-        <img :src="logoImage" alt="" style="width: 150px" />
-      </a>
+      <div class="navbar-brand flex-shrink-0">
+        <img :src="logoImage" alt="" style="width: 50px" @click="goHome" />
+      </div>
 
       <!-- Search -->
       <form class="d-flex flex-grow-1 mx-3" @submit.prevent="onSearch">
