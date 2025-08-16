@@ -5,6 +5,7 @@ import Profile from '@/components/pages/Profile.vue'
 import Cart from '@/components/pages/Cart.vue'
 import ProductDetail from '@/components/pages/ProductDetail.vue'
 import Login from '@/components/pages/Login.vue'
+import Search from '@/components/pages/Search.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -12,6 +13,7 @@ const routes = [
   { path: '/cart', component: Cart },
   { path: '/product/:id', component: ProductDetail },
   { path: '/login', component: Login },
+  { path: '/search/:keyword', component: Search },
 ]
 
 const router = createRouter({

@@ -42,7 +42,7 @@ public class ProductAPI extends HttpServlet {
                         Integer productId = Integer.parseInt(actionPath.getFirst());
                         OutboundProductDTO productDTO = productService.findById(productId);
                         if(productDTO == null) {
-                            JsonUtil.sendJsonResp(resp, new OutboundProductDTO(), HttpServletResponse.SC_NOT_FOUND);
+                            JsonUtil.sendJsonResp(resp, Map.of("error", "Product not found"), HttpServletResponse.SC_NOT_FOUND);
                         } else {
                             JsonUtil.sendJsonResp(resp, productDTO, HttpServletResponse.SC_OK);
                         }
@@ -54,7 +54,7 @@ public class ProductAPI extends HttpServlet {
                     if(actionPath.getFirst().equals("search")) {
                         try {
                             String keyword = actionPath.get(1);
-
+                            JsonUtil.sendJsonResp(resp, productService.findByNameLike(keyword), HttpServletResponse.SC_OK);
                         } catch (NumberFormatException e) {
                             JsonUtil.sendJsonResp(resp, Map.of("error", "Malformed url"), HttpServletResponse.SC_BAD_REQUEST);
                         }

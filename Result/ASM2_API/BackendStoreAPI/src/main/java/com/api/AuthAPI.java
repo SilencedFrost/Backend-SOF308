@@ -25,7 +25,7 @@ public class AuthAPI extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = getAction(req);
-        logger.info("Get request received");
+        logger.info("Post request received");
 
         if(action.length() == requestUrl.length()) {
             JsonUtil.sendJsonResp(resp, Map.of("error", "Malformed url"), HttpServletResponse.SC_BAD_REQUEST);

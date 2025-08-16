@@ -41,11 +41,7 @@ onMounted(fetchCategories)
           </h1>
         </div>
         <div class="row g-3">
-          <div
-            class="col-xl-3 col-lg-4 col-md-6 col-sm-12"
-            v-for="product in category.products"
-            :key="product.productId"
-          >
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" v-for="product in category.products">
             <display-item :product="product" />
           </div>
         </div>

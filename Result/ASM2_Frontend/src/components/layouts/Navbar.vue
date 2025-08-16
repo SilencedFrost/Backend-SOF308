@@ -7,7 +7,7 @@ const searchQuery = ref('')
 const router = useRouter()
 
 function onSearch() {
-  router.push({ path: '/search', query: { q: searchQuery.value } })
+  router.push(`/search/${encodeURIComponent(searchQuery.value)}`)
 }
 
 function goHome() {

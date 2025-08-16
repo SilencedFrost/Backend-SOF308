@@ -13,6 +13,7 @@ import com.util.ValidationUtil;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ public class ProductService implements Service<ProductDTO, Integer> {
     public List<OutboundProductDTO> findAll() {
         List<Product> productList;
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
-            productList = em.createQuery("SELECT r FROM Product r", Product.class).getResultList();
+            productList = em.createQuery("select p from Product p", Product.class).getResultList();
             logger.info("Fetched all products: " + productList.size() + " products found.");
             return ProductMapper.toDTOList(productList);
         } catch (PersistenceException e) {
@@ -58,7 +59,19 @@ public class ProductService implements Service<ProductDTO, Integer> {
             return ProductMapper.toDTOList(productList);
         } catch (PersistenceException e) {
             logger.log(Level.SEVERE, "Error fetching products", e);
-            return List.of();
+            return new ArrayList<>();
+        }
+    }
+
+    public List<OutboundProductDTO> findByNameLike(String keyword) {
+        List<Product> productList;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            productList = em.createQuery("select p from Product p where lower(p.productName) like lower(:keyword)", Product.class).setParameter("keyword", "%" + keyword + "%").getResultList();
+            logger.info("Fetched all products: " + productList.size() + " products found.");
+            return ProductMapper.toDTOList(productList);
+        } catch (PersistenceException e) {
+            logger.log(Level.SEVERE, "Error fetching products", e);
+            return new ArrayList<>();
         }
     }
 
