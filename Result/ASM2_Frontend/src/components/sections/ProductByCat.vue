@@ -60,6 +60,6 @@ onMounted(fetchCategories)
 
 <style scoped>
 section {
-  scroll-margin-top: 80px; /* match your sticky header height */
+  scroll-margin-top: 80px;
 }
 </style>

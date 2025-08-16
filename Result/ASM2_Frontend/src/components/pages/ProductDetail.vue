@@ -1,13 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+
+import ExtraProducts from '@/components/sections/ExtraProducts.vue'
 
 const quantity = ref(1)
 
 // Lấy ID sản phẩm từ URL
 const route = useRoute()
-const productId = route.params.id
+const productId = ref(route.params.id)
 
 // Reactive state
 const product = ref([])
@@ -16,8 +18,10 @@ const error = ref(null)
 
 // Fetch
 async function fetchCategories() {
+  loading.value = true
+  error.value = null
   try {
-    const response = await axios.get('http://localhost:8080/api/products/' + productId)
+    const response = await axios.get('http://localhost:8080/api/products/' + productId.value)
     product.value = response.data
   } catch (err) {
     error.value = 'Failed to load data'
@@ -27,6 +31,15 @@ async function fetchCategories() {
 }
 
 onMounted(fetchCategories)
+
+// Watch for route param changes
+watch(
+  () => route.params.id,
+  (newId) => {
+    productId.value = newId
+    fetchCategories()
+  },
+)
 </script>
 
 <template>
@@ -35,7 +48,7 @@ onMounted(fetchCategories)
     <div v-else-if="error" class="alert alert-danger">
       {{ error }}
     </div>
-    <div v-else>
+    <div v-else="">
       <div class="row">
         <div class="col-md-7 col-12"><img class="img-fluid w-100" :src="product.imageUrl" /></div>
         <!-- Thông tin sản phẩm -->
@@ -80,46 +93,27 @@ onMounted(fetchCategories)
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="container-fluid">
-    <!-- Sản phẩm liên quan -->
-    <div class="mt-5">
-      <h4>Sản phẩm liên quan</h4>
-      <div class="row">
-        <div v-for="(item, index) in relatedProducts" :key="index" class="col-md-3 text-center">
-          <img
-            :src="item.image"
-            :alt="item.name"
-            class="img-fluid border mb-2"
-            style="width: 200px; height: 200px; object-fit: cover"
-          />
-          <h6>{{ item.name }}</h6>
-          <div>
-            <small>({{ item.rating }})</small>
+      <div class="container-fluid p-0">
+        <!-- Sản phẩm liên quan -->
+        <extra-products :categoryId="product.categoryId" />
+        <!-- Bình luận -->
+        <div class="mt-5">
+          <h4>Bình luận</h4>
+          <div class="mb-3">
+            <textarea
+              v-model="newComment"
+              class="form-control"
+              placeholder="Viết bình luận..."
+              rows="3"
+            ></textarea>
           </div>
-          <div>❤️ {{ item.likes }} lượt thích</div>
-          <div class="text-danger fw-bold">{{ item.price }}</div>
+          <button class="btn btn-primary mb-4" @click="postComment">Gửi</button>
+          <div v-for="(cmt, index) in comments" :key="index" class="border p-2 mb-2">
+            <strong>{{ cmt.user }}</strong>
+            <br />
+            {{ cmt.text }}
+          </div>
         </div>
-      </div>
-    </div>
-    <!-- Bình luận -->
-    <div class="mt-5">
-      <h4>Bình luận</h4>
-      <div class="mb-3">
-        <textarea
-          v-model="newComment"
-          class="form-control"
-          placeholder="Viết bình luận..."
-          rows="3"
-        ></textarea>
-      </div>
-      <button class="btn btn-primary mb-4" @click="postComment">Gửi</button>
-      <div v-for="(cmt, index) in comments" :key="index" class="border p-2 mb-2">
-        <strong>{{ cmt.user }}</strong>
-        <br />
-        {{ cmt.text }}
       </div>
     </div>
   </div>

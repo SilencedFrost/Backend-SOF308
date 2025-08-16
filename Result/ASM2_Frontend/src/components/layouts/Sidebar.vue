@@ -31,7 +31,7 @@ onMounted(fetchCategories)
       <li v-for="category in categories">
         <a
           :href="'#category' + category.categoryId"
-          class="d-flex align-items-center justify-content-between px-3 py-2 text-decoration-none text-black"
+          class="d-flex align-items-center justify-content-between px-3 py-3 text-decoration-none text-black"
         >
           <div class="d-flex align-items-center">{{ category.categoryName }}</div>
         </a>

@@ -16,7 +16,9 @@ function addToCart() {
 const router = useRouter()
 
 function viewProduct() {
-  router.push(`/product/${props.product.productId}`)
+  router.push(`/product/${props.product.productId}`).then(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' }) // scroll to top
+  })
 }
 
 function formatPrice(price) {
@@ -27,9 +29,16 @@ function formatPrice(price) {
   <div class="card h-100 shadow-sm">
     <div class="position-relative" @click="viewProduct()" style="cursor: pointer">
       <img :src="product.imageUrl" :alt="product.productName" class="card-img-top p-2" />
-      <hr />
+      <hr class="m-0" />
     </div>
-    <div class="card-body d-flex flex-column">
+    <div class="card-body p-3">
+      <div
+        class="bg-primary text-white rounded-pill d-inline-flex align-items-center px-2 mb-2"
+        style="height: 22px; font-size: 0.85rem"
+      >
+        <i class="bi bi-chat-left me-1"></i>
+        {{ product.commentCount }}
+      </div>
       <h6 class="card-title fw-bold">{{ product.productName }}</h6>
       <div class="mb-3">
         <span class="h5 text-danger fw-bold">{{ formatPrice(product.price) }}$</span>
