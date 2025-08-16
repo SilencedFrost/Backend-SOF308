@@ -17,7 +17,7 @@ const props = defineProps({
 async function fetchCategory() {
   try {
     const response = await axios.get(
-      'http://localhost:8080/api/categories/' + String(props.categoryId) + '/products',
+      import.meta.env.VITE_API_BASE + '/categories/' + String(props.categoryId) + '/products',
     )
     category.value = response.data
   } catch (err) {

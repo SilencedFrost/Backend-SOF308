@@ -20,9 +20,3 @@ import Foot from '@/components/layouts/Footer.vue'
     </footer>
   </div>
 </template>
-
-<style>
-body {
-  min-width: 540px;
-}
-</style>

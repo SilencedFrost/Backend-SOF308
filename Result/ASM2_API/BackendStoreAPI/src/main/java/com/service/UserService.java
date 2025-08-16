@@ -10,11 +10,9 @@ import com.mapper.UserMapper;
 import com.security.PasswordHasher;
 import com.util.EntityManagerUtil;
 import com.util.ValidationUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +22,7 @@ public class UserService implements Service<UserDTO, Long>{
 
     @Override
     public List<UserDTO> findAll() {
-        List<User> userList = null;
+        List<User> userList;
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
             userList = em.createQuery("SELECT u FROM User u", User.class).getResultList();
             logger.info("Fetched all users: " + userList.size() + " users found.");
@@ -85,7 +83,11 @@ public class UserService implements Service<UserDTO, Long>{
     }
 
     public OutboundUserDTO findByUsernameOrEmail(String usernameOrEmail) {
-        User user = null;
+        if(ValidationUtil.isNullOrBlank(usernameOrEmail)) {
+            logger.warning("Username or Email is null, aborting search");
+            return null;
+        }
+        User user;
         try(EntityManager em = EntityManagerUtil.getEntityManager()) {
             user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:value) OR LOWER(u.email) = LOWER(:value)", User.class).setParameter("value", usernameOrEmail).getSingleResult();
             return UserMapper.toDTO(user);
@@ -96,6 +98,10 @@ public class UserService implements Service<UserDTO, Long>{
     }
 
     public boolean validateUser(String password, Long userId) {
+        if(ValidationUtil.isNullOrBlank(password)) {
+            logger.warning("Warning is null, aborting validation");
+            return false;
+        }
         if (userId == null) {
             logger.warning("ID is null, aborting validation");
             return false;
@@ -105,7 +111,7 @@ public class UserService implements Service<UserDTO, Long>{
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
             user = em.find(User.class, userId);
             logger.info("User with id " + userId + (user != null ? " found." : " not found."));
-        } catch (PersistenceException e) {
+        } catch (NoResultException e) {
             logger.log(Level.SEVERE, "Error finding user by ID", e);
         }
         if(user != null) {
@@ -160,10 +166,6 @@ public class UserService implements Service<UserDTO, Long>{
         }
     }
 
-    public boolean update(Long userId, String username, String email, String passwordHash, String roleName, boolean active) {
-        return update(new UpdateUserDTO(userId, username, email, passwordHash, roleName, active));
-    }
-
     @Override
     public boolean update(UserDTO userDTO) {
         if (!(userDTO instanceof UpdateUserDTO)) {
@@ -171,6 +173,38 @@ public class UserService implements Service<UserDTO, Long>{
             return false;
         }
         return update((UpdateUserDTO) userDTO);
+    }
+
+    public boolean update(Long userId, String username, String email, String passwordHash, String roleName, boolean active) {
+        return update(new UpdateUserDTO(userId, username, email, passwordHash, roleName, active));
+    }
+
+    public boolean updateLoginDate(Long userId) {
+        if(userId == null) {
+            logger.warning("User Id is null, aborting update");
+            return false;
+        }
+
+        try(EntityManager em = EntityManagerUtil.getEntityManager()) {
+            EntityTransaction tx = em.getTransaction();
+            try{
+
+                tx.begin();
+                User user = em.find(User.class, userId);
+                if(user != null) {
+                    logger.info("updating last login date for user " + user.getUserId());
+                    user.setLastLoginDate(LocalDateTime.now());
+                }
+                tx.commit();
+                return true;
+            } catch (PersistenceException e) {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+                logger.log(Level.SEVERE, "Error updating user login date", e);
+                return false;
+            }
+        }
     }
 
     // Object update method

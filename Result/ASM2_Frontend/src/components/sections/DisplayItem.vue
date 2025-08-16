@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { defineProps, defineEmits } from 'vue'
+import { defineProps } from 'vue'
 
 const props = defineProps({
   product: {
@@ -8,6 +8,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+const imageBase = import.meta.env.VITE_IMAGE_BASE
 
 function addToCart() {
   emits('add-to-cart', props.product)
@@ -28,7 +30,11 @@ function formatPrice(price) {
 <template>
   <div class="card h-100 shadow-sm">
     <div class="position-relative" @click="viewProduct()" style="cursor: pointer">
-      <img :src="product.imageUrl" :alt="product.productName" class="card-img-top p-2" />
+      <img
+        :src="imageBase + '/' + product.imageUrl"
+        :alt="product.productName"
+        class="card-img-top p-2"
+      />
       <hr class="m-0" />
     </div>
     <div class="card-body p-3">

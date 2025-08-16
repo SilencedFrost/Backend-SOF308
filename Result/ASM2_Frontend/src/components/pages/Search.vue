@@ -19,7 +19,9 @@ async function fetchCategories() {
   loading.value = true
   error.value = null
   try {
-    const response = await axios.get('http://localhost:8080/api/products/search/' + keyword.value)
+    const response = await axios.get(
+      import.meta.env.VITE_API_BASE + '/products/search/' + keyword.value,
+    )
     products.value = response.data
   } catch (err) {
     error.value = 'Failed to load data'

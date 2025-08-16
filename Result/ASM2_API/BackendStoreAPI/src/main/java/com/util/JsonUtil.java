@@ -37,18 +37,34 @@ public class JsonUtil {
                 json.append(line);
             }
         }
-        return json.toString();
+
+        if (json.isEmpty()) {
+            return null;
+        }
+
+        String result = json.toString();
+        return result.isBlank() ? null : result;
     }
 
     public static <T> T readJsonAs(HttpServletRequest request, Class<T> clazz) throws IOException {
-        return mapper.readValue(readJsonBody(request), clazz);
+        String body = readJsonBody(request);
+        if (body == null) {
+            return null;
+        }
+        return mapper.readValue(body, clazz);
     }
 
     public static <T> T readJsonAs(HttpServletRequest request, TypeReference<T> typeRef) throws IOException {
-        return mapper.readValue(readJsonBody(request), typeRef);
+        String body = readJsonBody(request);
+        if (body == null) {
+            return null;
+        }
+        return mapper.readValue(body, typeRef);
     }
 
     public static Map<String, String> readJsonAsMap(HttpServletRequest request) throws IOException {
-        return readJsonAs(request, new TypeReference<Map<String, String>>() {});
+        Map<String, String> map = readJsonAs(request, new TypeReference<>() {});
+        return map != null ? map : Map.of();
     }
+
 }
