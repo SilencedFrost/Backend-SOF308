@@ -1,31 +1,28 @@
 package com.service;
 
 import com.dto.InboundUserDTO;
+import com.dto.OutboundUserDTO;
+import com.dto.UpdateUserDTO;
 import com.dto.UserDTO;
-import com.dto.VideoDTO;
 import com.entity.Role;
 import com.entity.User;
 import com.mapper.UserMapper;
 import com.security.PasswordHasher;
 import com.util.EntityManagerUtil;
 import com.util.ValidationUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@NoArgsConstructor
-public class UserService implements Service<UserDTO, String>{
+public class UserService implements Service<UserDTO, Long>{
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
 
     @Override
     public List<UserDTO> findAll() {
-        List<User> userList = null;
+        List<User> userList;
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
             userList = em.createQuery("SELECT u FROM User u", User.class).getResultList();
             logger.info("Fetched all users: " + userList.size() + " users found.");
@@ -37,35 +34,19 @@ public class UserService implements Service<UserDTO, String>{
     }
 
     @Override
-    public UserDTO findById(String userId) {
-        if (ValidationUtil.isNullOrBlank(userId)) {
-            throw new IllegalArgumentException("ID cannot be null or empty");
+    public UserDTO findById(Long userId) {
+        if (userId == null) {
+            logger.warning("userId cannot be null");
+            return null;
         }
-
         User user;
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
-            user = em.find(User.class, userId.toLowerCase().trim());
+            user = em.find(User.class, userId);
             logger.info("User with id " + userId + (user != null ? " found." : " not found."));
             return user != null ? UserMapper.toDTO(user) : null;
         } catch (PersistenceException e) {
             logger.log(Level.SEVERE, "Error finding user by ID", e);
             return null;
-        }
-    }
-
-    public List<UserDTO> findByIdLike(String partialId){
-        if (ValidationUtil.isNullOrBlank(partialId)) {
-            throw new IllegalArgumentException("Partial ID cannot be null or empty");
-        }
-
-        List<User> userList = null;
-        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
-            userList = em.createQuery("SELECT u FROM User u WHERE LOWER(u.userId) LIKE LOWER(:partialId)", User.class).setParameter("partialId", "%" + partialId + "%").getResultList();
-            logger.info("Found " + userList.size() + " users with ID containing: " + partialId);
-            return UserMapper.toDTOList(userList);
-        } catch (PersistenceException e) {
-            logger.log(Level.SEVERE, "Error finding users by partial ID: " + partialId, e);
-            return List.of();
         }
     }
 
@@ -85,10 +66,30 @@ public class UserService implements Service<UserDTO, String>{
         }
     }
 
-    public UserDTO findByIdOrEmail(String idOrEmail) {
-        User user = null;
+    public UserDTO findByUsername(String username) {
+        if (ValidationUtil.isNullOrBlank(username)) {
+            throw new IllegalArgumentException("username cannot be null or empty");
+        }
+
+        User user;
+        try (EntityManager em = EntityManagerUtil.getEntityManager()) {
+            user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:username)", User.class).setParameter("username", username).getSingleResult();
+            logger.info("User with username " + username + (user != null ? " found." : " not found."));
+            return user != null ? UserMapper.toDTO(user) : null;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error finding user by username", e);
+            return null;
+        }
+    }
+
+    public OutboundUserDTO findByUsernameOrEmail(String usernameOrEmail) {
+        if(ValidationUtil.isNullOrBlank(usernameOrEmail)) {
+            logger.warning("Username or Email is null, aborting search");
+            return null;
+        }
+        User user;
         try(EntityManager em = EntityManagerUtil.getEntityManager()) {
-            user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.userId) = LOWER(:value) OR LOWER(u.email) = LOWER(:value)", User.class).setParameter("value", idOrEmail).getSingleResult();
+            user = em.createQuery("SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:value) OR LOWER(u.email) = LOWER(:value)", User.class).setParameter("value", usernameOrEmail).getSingleResult();
             return UserMapper.toDTO(user);
         } catch (PersistenceException e) {
             logger.log(Level.SEVERE, "Error fetching users", e);
@@ -96,16 +97,21 @@ public class UserService implements Service<UserDTO, String>{
         }
     }
 
-    public boolean validateUser(String password, String userId) {
-        if (ValidationUtil.isNullOrBlank(userId)) {
-            throw new IllegalArgumentException("ID cannot be null or empty");
+    public boolean validateUser(String password, Long userId) {
+        if(ValidationUtil.isNullOrBlank(password)) {
+            logger.warning("Warning is null, aborting validation");
+            return false;
+        }
+        if (userId == null) {
+            logger.warning("ID is null, aborting validation");
+            return false;
         }
 
         User user = null;
         try (EntityManager em = EntityManagerUtil.getEntityManager()) {
-            user = em.find(User.class, userId.toLowerCase().trim());
+            user = em.find(User.class, userId);
             logger.info("User with id " + userId + (user != null ? " found." : " not found."));
-        } catch (PersistenceException e) {
+        } catch (NoResultException e) {
             logger.log(Level.SEVERE, "Error finding user by ID", e);
         }
         if(user != null) {
@@ -116,8 +122,8 @@ public class UserService implements Service<UserDTO, String>{
     }
 
     // Manual creation method
-    public boolean create(String userId, String password, String fullName, String email, String roleName) {
-        return create(new InboundUserDTO(userId, password, fullName, email, roleName));
+    public boolean create(String username, String email, String passwordHash, String roleName, boolean active) {
+        return create(new InboundUserDTO(username, email, passwordHash, roleName, active));
     }
 
     @Override
@@ -144,8 +150,8 @@ public class UserService implements Service<UserDTO, String>{
             EntityTransaction tx = em.getTransaction();
             try {
                 tx.begin();
-                User user = UserMapper.toEntity(userDTO, null);
-                role.addUser(user);
+                User user = UserMapper.toEntity(userDTO, role);
+                user.setRole(role);
                 em.persist(user);
                 tx.commit();
                 logger.info("User created: " + user);
@@ -160,22 +166,50 @@ public class UserService implements Service<UserDTO, String>{
         }
     }
 
-    public boolean update(String userId, String password, String fullName, String email, String roleName) {
-        return update(new InboundUserDTO(userId, password, fullName, email, roleName));
-    }
-
     @Override
     public boolean update(UserDTO userDTO) {
-        if (!(userDTO instanceof InboundUserDTO)) {
-            logger.warning("Update requires InboundUserDTO for security reasons");
+        if (!(userDTO instanceof UpdateUserDTO)) {
+            logger.warning("Update requires UpdateUserDTO for security reasons");
             return false;
         }
-        return update((InboundUserDTO) userDTO);
+        return update((UpdateUserDTO) userDTO);
+    }
+
+    public boolean update(Long userId, String username, String email, String passwordHash, String roleName, boolean active) {
+        return update(new UpdateUserDTO(userId, username, email, passwordHash, roleName, active));
+    }
+
+    public boolean updateLoginDate(Long userId) {
+        if(userId == null) {
+            logger.warning("User Id is null, aborting update");
+            return false;
+        }
+
+        try(EntityManager em = EntityManagerUtil.getEntityManager()) {
+            EntityTransaction tx = em.getTransaction();
+            try{
+
+                tx.begin();
+                User user = em.find(User.class, userId);
+                if(user != null) {
+                    logger.info("updating last login date for user " + user.getUserId());
+                    user.setLastLoginDate(LocalDateTime.now());
+                }
+                tx.commit();
+                return true;
+            } catch (PersistenceException e) {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+                logger.log(Level.SEVERE, "Error updating user login date", e);
+                return false;
+            }
+        }
     }
 
     // Object update method
-    public boolean update(InboundUserDTO userDTO) {
-        if (userDTO == null || ValidationUtil.isNullOrBlank(userDTO.getUserId())) {
+    public boolean update(UpdateUserDTO userDTO) {
+        if (userDTO == null || userDTO.getUserId() == null) {
             logger.warning("User or User ID cannot be null or empty");
             return false;
         }
@@ -186,13 +220,13 @@ public class UserService implements Service<UserDTO, String>{
                 User existingUser = em.find(User.class, userDTO.getUserId());
                 if (existingUser != null) {
                     tx.begin();
-                    if(!ValidationUtil.isNullOrBlank(userDTO.getFullName())) existingUser.setFullName(userDTO.getFullName());
+                    if(!ValidationUtil.isNullOrBlank(userDTO.getUsername())) existingUser.setUsername(userDTO.getUsername());
                     if(!ValidationUtil.isNullOrBlank(userDTO.getPasswordHash())) existingUser.setPasswordHash(userDTO.getPasswordHash());
                     if(!ValidationUtil.isNullOrBlank(userDTO.getEmail()) || ValidationUtil.isValidEmail(userDTO.getEmail())) existingUser.setEmail(userDTO.getEmail());
                     if(!ValidationUtil.isNullOrBlank(userDTO.getRoleName())) {
                         Role role = RoleService.findByRoleName(em, userDTO.getRoleName());
                         if (role == null) role = em.find(Role.class, 1);
-                        role.addUser(existingUser);
+                        existingUser.setRole(role);
                     }
                     tx.commit();
                     logger.info("User with id " + userDTO.getUserId() + " updated successfully.");
@@ -213,7 +247,7 @@ public class UserService implements Service<UserDTO, String>{
 
     //Manual delete method
     @Override
-    public boolean delete(String userId) {
+    public boolean delete(Long userId) {
         if (userId == null) {
             logger.warning("ID cannot be null");
             return false;
@@ -229,7 +263,7 @@ public class UserService implements Service<UserDTO, String>{
             try {
                 tx.begin();
                 em.remove(user);
-                new Role().removeUser(user);
+                user.setRole(null);
                 tx.commit();
                 return true;
             } catch (Exception e) {
@@ -240,24 +274,5 @@ public class UserService implements Service<UserDTO, String>{
                 return false;
             }
         }
-    }
-
-    public List<VideoDTO> findFavouritedVideos(String userId) {
-        if(userId == null) return null;
-
-        List<Video> videoList;
-        try(EntityManager em = EntityManagerUtil.getEntityManager()) {
-            TypedQuery<Video> query = em.createQuery("SELECT f.video FROM Favourite f WHERE LOWER(f.user.id) = LOWER(:userId)", Video.class);
-            query.setParameter("userId", userId);
-            videoList = query.getResultList();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "", e);
-            return null;
-        }
-        return VideoMapper.toDTOList(videoList);
-    }
-
-    public List<VideoDTO> findFavouritedVideos(UserDTO userDTO) {
-        return findFavouritedVideos(userDTO.getUserId());
     }
 }

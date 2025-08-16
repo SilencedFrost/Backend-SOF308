@@ -10,7 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InboundCommentDTO implements CommentDTO{
-    private Long commentId;
     private Long userId;
     private Long productId;
     private String commentContent;

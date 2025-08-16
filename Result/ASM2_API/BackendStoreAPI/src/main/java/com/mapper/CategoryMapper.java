@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CategoryMapper {
 
-    public static CategoryDTO toDTO(Category category) {
+    public static OutboundCategoryDTO toDTO(Category category) {
         if (category == null) {
             return null;
         }
@@ -27,13 +27,12 @@ public class CategoryMapper {
         }
 
         return new Category(
-                categoryDTO.getCategoryId(),
                 categoryDTO.getCategoryName()
         );
     }
 
-    public static List<CategoryDTO> toDTOList(List<Category> entityList) {
-        List<CategoryDTO> dtoList = new ArrayList<>();
+    public static List<OutboundCategoryDTO> toDTOList(List<Category> entityList) {
+        List<OutboundCategoryDTO> dtoList = new ArrayList<>();
         for (Category category : entityList) {
             dtoList.add(CategoryMapper.toDTO(category));
         }

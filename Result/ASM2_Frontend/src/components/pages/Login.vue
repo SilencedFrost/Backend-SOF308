@@ -1,10 +1,83 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import { useRouter, useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
+const router = useRouter()
+const route = useRoute()
+
+const username = ref('')
+const password = ref('')
+const isLoading = ref(false)
+const errorMessage = ref('')
+
+function validateUsernameOrEmail() {
+  return username.value != null && username.value.trim() !== ''
+}
+
+function validatePassword() {
+  return password.value != null && password.value.trim() !== ''
+}
+
+function redirectAfterLogin() {
+  const redirectPath = route.query.redirect || '/'
+  router.push(redirectPath)
+}
+
+onMounted(async () => {
+  await authStore.checkSession()
+  if (authStore.userId > 0) {
+    redirectAfterLogin()
+  }
+})
+
+async function onLogin() {
+  errorMessage.value = ''
+
+  if (!validateUsernameOrEmail() || !validatePassword()) {
+    errorMessage.value = 'Please enter both username/email and password.'
+    return
+  }
+
+  isLoading.value = true
+  try {
+    const res = await axios.post(
+      import.meta.env.VITE_API_BASE + '/auth/login',
+      {
+        usernameOrEmail: username.value,
+        password: password.value,
+      },
+      { withCredentials: true },
+    )
+
+    if (res.data && res.data.userId) {
+      authStore.setUser(res.data)
+      redirectAfterLogin()
+    } else {
+      errorMessage.value = 'Invalid credentials or user not found.'
+      authStore.clearUser()
+    }
+  } catch (err) {
+    errorMessage.value = 'Login failed. Please check your credentials.'
+    authStore.clearUser()
+  } finally {
+    isLoading.value = false
+  }
+}
+
+function loginWithGoogle() {}
+</script>
+
 <template>
-  <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card shadow-sm p-4" style="max-width: 400px; width: 100%;">
-      <h3 class="mb-4 text-center text-primary">Đăng nhập</h3>
+  <div class="container d-flex justify-content-center align-items-center h-100">
+    <div class="card shadow-sm p-3" style="max-width: 400px; width: 100%">
+      <h2 class="mb-3 text-center text-primary">Đăng nhập</h2>
+      <hr class="p-0 m-2" />
       <form @submit.prevent="onLogin">
         <div class="mb-3">
-          <label for="username" class="form-label">Tên đăng nhập</label>
+          <label for="username" class="form-label">Tên đăng nhập hoặc email</label>
           <input
             type="text"
             id="username"
@@ -12,6 +85,8 @@
             class="form-control"
             required
             autocomplete="username"
+            placeholder="Username or email"
+            :disabled="isLoading"
           />
         </div>
         <div class="mb-3">
@@ -23,70 +98,23 @@
             class="form-control"
             required
             autocomplete="current-password"
+            placeholder="Password"
+            :disabled="isLoading"
           />
         </div>
-        <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+        <button type="submit" class="btn btn-primary w-100" :disabled="isLoading">
+          <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isLoading ? 'Đang đăng nhập...' : 'Đăng nhập' }}
+        </button>
       </form>
-      <button class="btn btn-danger w-100 mt-3" @click="loginWithGoogle">
+      <button class="btn btn-danger w-100 mt-3" @click="loginWithGoogle" :disabled="isLoading">
         <i class="fab fa-google me-2"></i> Đăng nhập bằng Google
       </button>
       <div class="mt-3 text-center">
-        <a href="#" class="text-decoration-none">Quên mật khẩu?</a>
+        <router-link to="/forgot-password" class="text-decoration-none">Quên mật khẩu?</router-link>
         <span class="mx-2">|</span>
-        <a href="#" class="text-decoration-none">Đăng ký tài khoản</a>
-      </div>
-      <div v-if="error" class="alert alert-danger mt-3 py-2">
-        {{ error }}
+        <router-link to="/register" class="text-decoration-none">Đăng ký tài khoản</router-link>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "Login",
-  data() {
-    return {
-      username: "",
-      password: "",
-      error: "",
-    };
-  },
-  methods: {
-    async onLogin() {
-      this.error = "";
-      if (!this.username || !this.password) {
-        this.error = "Vui lòng nhập đầy đủ thông tin!";
-        return;
-      }
-      try {
-        const res = await fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: this.username,
-            password: this.password,
-          }),
-        });
-        if (!res.ok) {
-          this.error = "Tên đăng nhập hoặc mật khẩu không đúng!";
-          return;
-        }
-        const data = await res.json();
-        localStorage.setItem("user", JSON.stringify(data));
-        this.$router.push("/");
-      } catch (err) {
-        this.error = "Có lỗi xảy ra, vui lòng thử lại!";
-      }
-    },
-    loginWithGoogle() {
-      // Redirect to Google OAuth (ví dụ)
-      window.location.href = "/api/login/google";
-    },
-    logout() {
-      localStorage.removeItem("user");
-      this.$router.push("/");
-    }
-  },
-};
-</script>

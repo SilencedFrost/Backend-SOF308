@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CategoryFields implements Automatable {
     CATEGORY_ID("categoryId"),
-    CATEGORY_NAME("categoryName");
+    CATEGORY_NAME("categoryName"),
+    PRODUCT_COUNT("productCount");
 
     private final String propertyKey;
 }

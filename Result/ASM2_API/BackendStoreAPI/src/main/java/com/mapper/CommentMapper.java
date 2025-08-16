@@ -31,7 +31,6 @@ public class CommentMapper {
         }
 
         return new Comment(
-                commentDTO.getCommentId(),
                 user,
                 product,
                 commentDTO.getCommentContent()

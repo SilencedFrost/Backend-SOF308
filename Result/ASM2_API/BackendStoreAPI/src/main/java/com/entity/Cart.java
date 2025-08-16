@@ -3,11 +3,8 @@ package com.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "Cart",
         uniqueConstraints = {
@@ -15,34 +12,61 @@ import lombok.*;
         })
 public class Cart {
 
+    @Getter
     @EmbeddedId
     private CartPK id;
 
+    @Getter
+    @Setter
     @Column(name = "Quantity", nullable = false)
     private Integer quantity;
 
-    // Convenience accessors
-    public User getUser() {
-        return id != null ? id.getUser() : null;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserId", insertable = false, updatable = false)
+    private User user;
 
-    public Product getProduct() {
-        return id != null ? id.getProduct() : null;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ProductId", insertable = false, updatable = false)
+    private Product product;
 
     public void setUser(User user) {
+        if (this.user != null) {
+            this.user.getCarts().remove(this);
+        }
+
         if (id == null) id = new CartPK();
         id.setUser(user);
+        this.user = user;
+
         if (user != null) {
             user.getCarts().add(this);
         }
     }
 
     public void setProduct(Product product) {
+        if (this.product != null) {
+            this.product.getCarts().remove(this);
+        }
+
         if (id == null) id = new CartPK();
         id.setProduct(product);
+        this.product = product;
+
         if (product != null) {
             product.getCarts().add(this);
+        }
+    }
+
+    public void setId(CartPK id) {
+        if (this.id != null) {
+            setUser(null);
+            setProduct(null);
+        }
+
+        this.id = id;
+        if (id != null) {
+            setUser(id.getUser());
+            setProduct(id.getProduct());
         }
     }
 }
