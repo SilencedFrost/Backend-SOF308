@@ -93,12 +93,6 @@ async function onLogin() {
       <a class="btn btn-danger w-100 mt-3" :href="googleAuthService.getAuthUrl()">
         <i class="fab fa-google me-2"></i> Đăng nhập bằng Google
       </a>
-
-      <div class="mt-3 text-center">
-        <router-link to="/forgot-password" class="text-decoration-none">Quên mật khẩu?</router-link>
-        <span class="mx-2">|</span>
-        <router-link to="/register" class="text-decoration-none">Đăng ký tài khoản</router-link>
-      </div>
     </div>
   </div>
 </template>
