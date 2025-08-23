@@ -7,13 +7,14 @@ import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-import BootstrapVue3 from 'bootstrap-vue-3'
-import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+import { createBootstrap } from 'bootstrap-vue-next'
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
 const app = createApp(App)
+const bootstrap = createBootstrap()
 
 app.use(createPinia())
 app.use(router)
-app.use(BootstrapVue3)
+app.use(bootstrap)
 
 app.mount('#app')

@@ -1,7 +1,6 @@
-<!-- @/components/todos/EditTodoModal.vue -->
 <script setup>
 import { ref, watch, computed } from 'vue'
-import { BModal } from 'bootstrap-vue-3'
+import { BModal } from 'bootstrap-vue-next'
 
 const props = defineProps({
   show: Boolean,
